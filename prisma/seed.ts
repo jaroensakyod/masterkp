@@ -473,6 +473,200 @@ const subjects: SeedSubject[] = [
           },
         ],
       },
+      {
+        name: "Symbol Conditions",
+        nameTh: "เงื่อนไขสัญลักษณ์",
+        slug: "symbol-conditions",
+        description: "เปรียบเทียบค่าตามเงื่อนไขสัญลักษณ์ (ออกสอบจริงมากที่สุด)",
+        order: 4,
+        questions: [
+          {
+            content: "ถ้า A > B, B > C แล้ว A กับ C ข้อใดถูกต้อง?",
+            difficulty: "EASY",
+            explanation: "ตามกฎถ่ายทอด A > B > C ดังนั้น A > C เสมอ",
+            options: [
+              { content: "A > C", isCorrect: true, order: 1 },
+              { content: "A < C", isCorrect: false, order: 2 },
+              { content: "A = C", isCorrect: false, order: 3 },
+              { content: "สรุปไม่ได้", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "กำหนด A = B, B > C, C ≥ D ข้อสรุป 'A > D' เป็นจริงหรือไม่?",
+            difficulty: "MEDIUM",
+            explanation: "A = B > C ≥ D ดังนั้น A > D เป็นจริงแน่นอน (B>C ทำให้เป็นมากกว่าเด็ดขาด)",
+            options: [
+              { content: "เป็นจริงแน่นอน", isCorrect: true, order: 1 },
+              { content: "เป็นเท็จแน่นอน", isCorrect: false, order: 2 },
+              { content: "ไม่แน่นอน", isCorrect: false, order: 3 },
+              { content: "ข้อมูลไม่พอ", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "กำหนด A ≥ B, B = C ข้อสรุป 'A = C' เป็นอย่างไร?",
+            difficulty: "MEDIUM",
+            explanation: "A ≥ B และ B = C ดังนั้น A ≥ C จึงสรุปแน่นอนว่า A=C ไม่ได้ (A อาจมากกว่า C) → ไม่แน่นอน",
+            options: [
+              { content: "เป็นจริงแน่นอน", isCorrect: false, order: 1 },
+              { content: "เป็นเท็จแน่นอน", isCorrect: false, order: 2 },
+              { content: "ไม่แน่นอน (อาจจริงหรือเท็จ)", isCorrect: true, order: 3 },
+              { content: "ข้อมูลขัดแย้ง", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "กำหนด X < Y, Y < Z ข้อสรุป 'Z > X' เป็นอย่างไร?",
+            difficulty: "EASY",
+            explanation: "X < Y < Z ดังนั้น Z > X เป็นจริงแน่นอน",
+            options: [
+              { content: "เป็นจริงแน่นอน", isCorrect: true, order: 1 },
+              { content: "เป็นเท็จแน่นอน", isCorrect: false, order: 2 },
+              { content: "ไม่แน่นอน", isCorrect: false, order: 3 },
+              { content: "ข้อมูลไม่พอ", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "กำหนด P ≤ Q, Q ≤ R, R ≤ P ข้อสรุปที่ถูกต้องคือ?",
+            difficulty: "HARD",
+            explanation: "P ≤ Q ≤ R ≤ P เป็นไปได้เมื่อ P = Q = R เท่านั้น",
+            options: [
+              { content: "P = Q = R", isCorrect: true, order: 1 },
+              { content: "P > R", isCorrect: false, order: 2 },
+              { content: "Q < P", isCorrect: false, order: 3 },
+              { content: "ข้อมูลขัดแย้ง", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "กำหนด A > B, C > B ข้อสรุป 'A > C' เป็นอย่างไร?",
+            difficulty: "MEDIUM",
+            explanation: "ทั้ง A และ C ต่างมากกว่า B แต่เทียบ A กับ C โดยตรงไม่ได้ → ไม่แน่นอน",
+            options: [
+              { content: "เป็นจริงแน่นอน", isCorrect: false, order: 1 },
+              { content: "ไม่แน่นอน", isCorrect: true, order: 2 },
+              { content: "เป็นเท็จแน่นอน", isCorrect: false, order: 3 },
+              { content: "A = C", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "กำหนด M = N, N ≠ O ข้อสรุป 'M ≠ O' เป็นอย่างไร?",
+            difficulty: "MEDIUM",
+            explanation: "M = N และ N ≠ O ดังนั้น M ≠ O เป็นจริงแน่นอน",
+            options: [
+              { content: "เป็นจริงแน่นอน", isCorrect: true, order: 1 },
+              { content: "ไม่แน่นอน", isCorrect: false, order: 2 },
+              { content: "เป็นเท็จแน่นอน", isCorrect: false, order: 3 },
+              { content: "M = O", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "กำหนด A < B < C < D ข้อสรุป 'D เป็นค่ามากที่สุด' เป็นอย่างไร?",
+            difficulty: "EASY",
+            explanation: "เรียงจากน้อยไปมาก A<B<C<D ดังนั้น D มากที่สุดแน่นอน",
+            options: [
+              { content: "เป็นจริงแน่นอน", isCorrect: true, order: 1 },
+              { content: "ไม่แน่นอน", isCorrect: false, order: 2 },
+              { content: "เป็นเท็จ", isCorrect: false, order: 3 },
+              { content: "A มากที่สุด", isCorrect: false, order: 4 },
+            ],
+          },
+        ],
+      },
+      {
+        name: "Table & Data Interpretation",
+        nameTh: "การอ่านตารางและข้อมูล",
+        slug: "table-reading",
+        description: "วิเคราะห์ข้อมูลจากตารางและกราฟ",
+        order: 5,
+        questions: [
+          {
+            content: "ร้านค้าขายของได้ จันทร์ 100, อังคาร 150, พุธ 200 บาท รวม 3 วันได้กี่บาท?",
+            difficulty: "EASY",
+            explanation: "100 + 150 + 200 = 450 บาท",
+            options: [
+              { content: "400 บาท", isCorrect: false, order: 1 },
+              { content: "450 บาท", isCorrect: true, order: 2 },
+              { content: "500 บาท", isCorrect: false, order: 3 },
+              { content: "350 บาท", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "นักเรียน 4 ห้อง มี 30, 35, 28, 27 คน เฉลี่ยห้องละกี่คน?",
+            difficulty: "MEDIUM",
+            explanation: "(30+35+28+27) ÷ 4 = 120 ÷ 4 = 30 คน",
+            options: [
+              { content: "28 คน", isCorrect: false, order: 1 },
+              { content: "30 คน", isCorrect: true, order: 2 },
+              { content: "32 คน", isCorrect: false, order: 3 },
+              { content: "29 คน", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "ยอดขาย ปี 1 = 200, ปี 2 = 250 ล้านบาท เพิ่มขึ้นกี่เปอร์เซ็นต์?",
+            difficulty: "MEDIUM",
+            explanation: "เพิ่มขึ้น 50 จากฐาน 200 → (50/200)×100 = 25%",
+            options: [
+              { content: "20%", isCorrect: false, order: 1 },
+              { content: "25%", isCorrect: true, order: 2 },
+              { content: "50%", isCorrect: false, order: 3 },
+              { content: "30%", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "ตารางแสดงคะแนน A=80, B=90, C=70, D=60 ใครได้คะแนนสูงสุด?",
+            difficulty: "EASY",
+            explanation: "เปรียบเทียบ 80, 90, 70, 60 → B = 90 สูงสุด",
+            options: [
+              { content: "A", isCorrect: false, order: 1 },
+              { content: "B", isCorrect: true, order: 2 },
+              { content: "C", isCorrect: false, order: 3 },
+              { content: "D", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "โรงงานผลิต ม.ค. 1,200, ก.พ. 1,500 ชิ้น ก.พ. ผลิตมากกว่ากี่ชิ้น?",
+            difficulty: "EASY",
+            explanation: "1,500 − 1,200 = 300 ชิ้น",
+            options: [
+              { content: "200 ชิ้น", isCorrect: false, order: 1 },
+              { content: "300 ชิ้น", isCorrect: true, order: 2 },
+              { content: "500 ชิ้น", isCorrect: false, order: 3 },
+              { content: "250 ชิ้น", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "พนักงาน 50 คน เป็นชาย 30 คน คิดเป็นกี่เปอร์เซ็นต์ของทั้งหมด?",
+            difficulty: "MEDIUM",
+            explanation: "(30/50)×100 = 60%",
+            options: [
+              { content: "50%", isCorrect: false, order: 1 },
+              { content: "60%", isCorrect: true, order: 2 },
+              { content: "40%", isCorrect: false, order: 3 },
+              { content: "70%", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "งบรายจ่าย 4 ด้านรวม 100% อาหาร 40% เดินทาง 25% ที่พัก 20% เหลือด้านอื่นกี่ %?",
+            difficulty: "MEDIUM",
+            explanation: "100 − (40+25+20) = 100 − 85 = 15%",
+            options: [
+              { content: "10%", isCorrect: false, order: 1 },
+              { content: "15%", isCorrect: true, order: 2 },
+              { content: "20%", isCorrect: false, order: 3 },
+              { content: "5%", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "สินค้าราคา 800 บาท ลด 25% ต้องจ่ายเท่าไร?",
+            difficulty: "MEDIUM",
+            explanation: "ลด 25% = 200 บาท เหลือ 800 − 200 = 600 บาท",
+            options: [
+              { content: "550 บาท", isCorrect: false, order: 1 },
+              { content: "600 บาท", isCorrect: true, order: 2 },
+              { content: "650 บาท", isCorrect: false, order: 3 },
+              { content: "700 บาท", isCorrect: false, order: 4 },
+            ],
+          },
+        ],
+      },
     ],
   },
   {
@@ -863,6 +1057,103 @@ const subjects: SeedSubject[] = [
           },
         ],
       },
+      {
+        name: "Sentence Ordering",
+        nameTh: "การเรียงประโยค",
+        slug: "sentence-ordering",
+        description: "เรียงลำดับข้อความให้เป็นประโยคหรือเรื่องที่สมบูรณ์",
+        order: 4,
+        questions: [
+          {
+            content: "เรียงประโยคให้ถูกต้อง: (1) จึงไปโรงเรียน (2) เขาตื่นนอน (3) อาบน้ำแต่งตัว",
+            difficulty: "EASY",
+            explanation: "ลำดับเหตุการณ์ตามธรรมชาติ: ตื่นนอน → อาบน้ำแต่งตัว → ไปโรงเรียน คือ 2-3-1",
+            options: [
+              { content: "1-2-3", isCorrect: false, order: 1 },
+              { content: "2-3-1", isCorrect: true, order: 2 },
+              { content: "3-2-1", isCorrect: false, order: 3 },
+              { content: "2-1-3", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "เรียงประโยค: (1) ทำให้น้ำท่วม (2) ฝนตกหนัก (3) ประชาชนเดือดร้อน",
+            difficulty: "MEDIUM",
+            explanation: "เหตุ-ผลต่อเนื่อง: ฝนตกหนัก → ทำให้น้ำท่วม → ประชาชนเดือดร้อน คือ 2-1-3",
+            options: [
+              { content: "2-1-3", isCorrect: true, order: 1 },
+              { content: "1-2-3", isCorrect: false, order: 2 },
+              { content: "3-2-1", isCorrect: false, order: 3 },
+              { content: "2-3-1", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "เรียงประโยค: (1) เก็บเงินได้มากพอ (2) เขาทำงานหนัก (3) จึงซื้อบ้านได้",
+            difficulty: "MEDIUM",
+            explanation: "ลำดับเหตุผล: ทำงานหนัก → เก็บเงินได้มากพอ → จึงซื้อบ้านได้ คือ 2-1-3",
+            options: [
+              { content: "2-1-3", isCorrect: true, order: 1 },
+              { content: "1-2-3", isCorrect: false, order: 2 },
+              { content: "2-3-1", isCorrect: false, order: 3 },
+              { content: "3-1-2", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "ข้อความใดควรเป็นประโยคแรกของย่อหน้าเรื่อง 'การออกกำลังกาย'?",
+            difficulty: "MEDIUM",
+            explanation: "ประโยคนำควรเป็นใจความหลัก/บทนำกว้าง ๆ ก่อนลงรายละเอียด",
+            options: [
+              { content: "เช่น วิ่ง ว่ายน้ำ ปั่นจักรยาน", isCorrect: false, order: 1 },
+              { content: "การออกกำลังกายมีประโยชน์ต่อสุขภาพ", isCorrect: true, order: 2 },
+              { content: "ดังนั้นจึงควรทำสม่ำเสมอ", isCorrect: false, order: 3 },
+              { content: "และช่วยลดความเครียดได้ด้วย", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "เรียงประโยค: (1) ปรุงรสตามชอบ (2) ล้างผัก (3) หั่นเป็นชิ้น (4) นำไปผัด",
+            difficulty: "MEDIUM",
+            explanation: "ขั้นตอนทำอาหาร: ล้างผัก → หั่นเป็นชิ้น → นำไปผัด → ปรุงรส คือ 2-3-4-1",
+            options: [
+              { content: "2-3-4-1", isCorrect: true, order: 1 },
+              { content: "1-2-3-4", isCorrect: false, order: 2 },
+              { content: "2-3-1-4", isCorrect: false, order: 3 },
+              { content: "3-2-4-1", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "ข้อความใดควรเป็นประโยคปิดท้ายย่อหน้า?",
+            difficulty: "EASY",
+            explanation: "ประโยคปิดมักสรุปด้วยคำว่า 'ดังนั้น/จึง' เพื่อรวบความ",
+            options: [
+              { content: "ประการแรก...", isCorrect: false, order: 1 },
+              { content: "ดังนั้นเราจึงควรช่วยกันรักษาสิ่งแวดล้อม", isCorrect: true, order: 2 },
+              { content: "ตัวอย่างเช่น...", isCorrect: false, order: 3 },
+              { content: "นอกจากนี้...", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "เรียงประโยค: (1) จึงสอบผ่าน (2) อ่านหนังสือทุกวัน (3) ตั้งใจเรียน",
+            difficulty: "EASY",
+            explanation: "เหตุ-ผล: ตั้งใจเรียน → อ่านหนังสือทุกวัน → จึงสอบผ่าน คือ 3-2-1",
+            options: [
+              { content: "3-2-1", isCorrect: true, order: 1 },
+              { content: "2-3-1", isCorrect: false, order: 2 },
+              { content: "1-2-3", isCorrect: false, order: 3 },
+              { content: "2-1-3", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "เรียงประโยค: (1) ออกผลให้เก็บเกี่ยว (2) ปลูกต้นไม้ (3) รดน้ำพรวนดิน",
+            difficulty: "MEDIUM",
+            explanation: "ลำดับการเกษตร: ปลูกต้นไม้ → รดน้ำพรวนดิน → ออกผลให้เก็บเกี่ยว คือ 2-3-1",
+            options: [
+              { content: "2-3-1", isCorrect: true, order: 1 },
+              { content: "1-2-3", isCorrect: false, order: 2 },
+              { content: "3-2-1", isCorrect: false, order: 3 },
+              { content: "2-1-3", isCorrect: false, order: 4 },
+            ],
+          },
+        ],
+      },
     ],
   },
   {
@@ -1134,6 +1425,103 @@ const subjects: SeedSubject[] = [
           },
         ],
       },
+      {
+        name: "Conversation",
+        nameTh: "บทสนทนาภาษาอังกฤษ",
+        slug: "english-conversation",
+        description: "เลือกประโยคสนทนาที่เหมาะสมกับสถานการณ์",
+        order: 3,
+        questions: [
+          {
+            content: "A: 'Thank you for your help.' B: '_____'",
+            difficulty: "EASY",
+            explanation: "การตอบรับคำขอบคุณที่สุภาพคือ 'You're welcome.'",
+            options: [
+              { content: "You're welcome.", isCorrect: true, order: 1 },
+              { content: "I'm sorry.", isCorrect: false, order: 2 },
+              { content: "Yes, please.", isCorrect: false, order: 3 },
+              { content: "No, thanks.", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "A: 'Would you like some coffee?' B: '_____'",
+            difficulty: "EASY",
+            explanation: "การตอบรับข้อเสนออย่างสุภาพคือ 'Yes, please.'",
+            options: [
+              { content: "Yes, please.", isCorrect: true, order: 1 },
+              { content: "You're welcome.", isCorrect: false, order: 2 },
+              { content: "Never mind.", isCorrect: false, order: 3 },
+              { content: "Here you are.", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "A: 'Could you tell me the way to the station?' B: '_____'",
+            difficulty: "MEDIUM",
+            explanation: "เมื่อถูกถามทาง ตอบด้วยการให้ทิศทาง 'Sure, go straight ahead.'",
+            options: [
+              { content: "Sure, go straight ahead.", isCorrect: true, order: 1 },
+              { content: "No, thank you.", isCorrect: false, order: 2 },
+              { content: "I'm fine.", isCorrect: false, order: 3 },
+              { content: "It's delicious.", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "A: 'I'm sorry I'm late.' B: '_____'",
+            difficulty: "MEDIUM",
+            explanation: "การให้อภัยที่สุภาพคือ 'That's all right.'",
+            options: [
+              { content: "That's all right.", isCorrect: true, order: 1 },
+              { content: "You're welcome.", isCorrect: false, order: 2 },
+              { content: "Yes, I do.", isCorrect: false, order: 3 },
+              { content: "Good luck.", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "On the phone: 'Hello, may I speak to John?' '_____'",
+            difficulty: "MEDIUM",
+            explanation: "การรับโทรศัพท์ที่ถูกต้องคือ 'Hold on, please.' (รอสักครู่)",
+            options: [
+              { content: "Hold on, please.", isCorrect: true, order: 1 },
+              { content: "You're welcome.", isCorrect: false, order: 2 },
+              { content: "Help yourself.", isCorrect: false, order: 3 },
+              { content: "Never mind.", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "A: 'How was your trip?' B: '_____'",
+            difficulty: "EASY",
+            explanation: "ตอบเกี่ยวกับประสบการณ์ทริปคือ 'It was wonderful!'",
+            options: [
+              { content: "It was wonderful!", isCorrect: true, order: 1 },
+              { content: "You're welcome.", isCorrect: false, order: 2 },
+              { content: "Yes, I can.", isCorrect: false, order: 3 },
+              { content: "Here you are.", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "At a restaurant: 'Are you ready to order?' '_____'",
+            difficulty: "MEDIUM",
+            explanation: "เมื่อบริกรถาม ตอบขอเวลาอีกนิดคือ 'Just a moment, please.'",
+            options: [
+              { content: "Just a moment, please.", isCorrect: true, order: 1 },
+              { content: "You're welcome.", isCorrect: false, order: 2 },
+              { content: "I'm sorry.", isCorrect: false, order: 3 },
+              { content: "Good night.", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "A: 'Nice to meet you.' B: '_____'",
+            difficulty: "EASY",
+            explanation: "การตอบทักทายเมื่อพบกันครั้งแรกคือ 'Nice to meet you, too.'",
+            options: [
+              { content: "Nice to meet you, too.", isCorrect: true, order: 1 },
+              { content: "You're welcome.", isCorrect: false, order: 2 },
+              { content: "No problem.", isCorrect: false, order: 3 },
+              { content: "Goodbye.", isCorrect: false, order: 4 },
+            ],
+          },
+        ],
+      },
     ],
   },
   {
@@ -1357,6 +1745,103 @@ const subjects: SeedSubject[] = [
               { content: "เปิดโอกาสให้ประชาชนมีส่วนร่วม", isCorrect: true, order: 2 },
               { content: "ปิดข้อมูล", isCorrect: false, order: 3 },
               { content: "ทำตามคำสั่งเท่านั้น", isCorrect: false, order: 4 },
+            ],
+          },
+        ],
+      },
+      {
+        name: "Administrative Law",
+        nameTh: "กฎหมายปกครองและการบริหารราชการ",
+        slug: "administrative-law",
+        description: "พ.ร.บ.ระเบียบบริหารราชการแผ่นดิน พ.ร.ฎ.บ้านเมืองที่ดี และวิธีปฏิบัติราชการทางปกครอง",
+        order: 3,
+        questions: [
+          {
+            content: "การบริหารราชการแผ่นดินแบ่งออกเป็นกี่ส่วน?",
+            difficulty: "MEDIUM",
+            explanation: "ตาม พ.ร.บ.ระเบียบบริหารราชการแผ่นดิน แบ่งเป็น 3 ส่วน: ส่วนกลาง ส่วนภูมิภาค และส่วนท้องถิ่น",
+            options: [
+              { content: "2 ส่วน", isCorrect: false, order: 1 },
+              { content: "3 ส่วน", isCorrect: true, order: 2 },
+              { content: "4 ส่วน", isCorrect: false, order: 3 },
+              { content: "5 ส่วน", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "ราชการบริหารส่วนภูมิภาคประกอบด้วยหน่วยใด?",
+            difficulty: "MEDIUM",
+            explanation: "ราชการส่วนภูมิภาคได้แก่ จังหวัด และอำเภอ",
+            options: [
+              { content: "กระทรวง กรม", isCorrect: false, order: 1 },
+              { content: "จังหวัด อำเภอ", isCorrect: true, order: 2 },
+              { content: "อบต. เทศบาล", isCorrect: false, order: 3 },
+              { content: "หมู่บ้าน ตำบล", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "ผู้ว่าราชการจังหวัดเป็นข้าราชการสังกัดส่วนใด?",
+            difficulty: "EASY",
+            explanation: "ผู้ว่าราชการจังหวัดเป็นหัวหน้าราชการบริหารส่วนภูมิภาคในจังหวัด สังกัดกระทรวงมหาดไทย",
+            options: [
+              { content: "ส่วนท้องถิ่น", isCorrect: false, order: 1 },
+              { content: "ส่วนภูมิภาค", isCorrect: true, order: 2 },
+              { content: "ส่วนกลางเท่านั้น", isCorrect: false, order: 3 },
+              { content: "องค์กรอิสระ", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "พ.ร.ฎ.ว่าด้วยหลักเกณฑ์และวิธีการบริหารกิจการบ้านเมืองที่ดี มีเป้าหมายหลักเพื่อ?",
+            difficulty: "MEDIUM",
+            explanation: "มุ่งให้การบริหารราชการเกิดประโยชน์สุขของประชาชน เกิดผลสัมฤทธิ์ และมีประสิทธิภาพคุ้มค่า",
+            options: [
+              { content: "เพิ่มจำนวนข้าราชการ", isCorrect: false, order: 1 },
+              { content: "ประโยชน์สุขของประชาชนและประสิทธิภาพ", isCorrect: true, order: 2 },
+              { content: "ลดอำนาจประชาชน", isCorrect: false, order: 3 },
+              { content: "เพิ่มงบประมาณ", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "ราชการบริหารส่วนท้องถิ่นรูปแบบใดต่อไปนี้ถูกต้อง?",
+            difficulty: "MEDIUM",
+            explanation: "ราชการส่วนท้องถิ่น เช่น อบต. เทศบาล อบจ. กรุงเทพมหานคร เมืองพัทยา",
+            options: [
+              { content: "กระทรวง", isCorrect: false, order: 1 },
+              { content: "เทศบาล / อบต. / อบจ.", isCorrect: true, order: 2 },
+              { content: "จังหวัด", isCorrect: false, order: 3 },
+              { content: "อำเภอ", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "ตาม พ.ร.บ.วิธีปฏิบัติราชการทางปกครอง 'คำสั่งทางปกครอง' หมายถึง?",
+            difficulty: "HARD",
+            explanation: "การใช้อำนาจตามกฎหมายของเจ้าหน้าที่ที่มีผลกระทบต่อสิทธิหน้าที่ของบุคคล เช่น การออกใบอนุญาต",
+            options: [
+              { content: "การประชุมภายใน", isCorrect: false, order: 1 },
+              { content: "การใช้อำนาจที่กระทบสิทธิของบุคคล เช่น ออกใบอนุญาต", isCorrect: true, order: 2 },
+              { content: "การพูดคุยทั่วไป", isCorrect: false, order: 3 },
+              { content: "การเขียนรายงาน", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "คู่กรณีในกระบวนการพิจารณาทางปกครองมีสิทธิใดที่สำคัญ?",
+            difficulty: "MEDIUM",
+            explanation: "มีสิทธิได้รับแจ้งข้อเท็จจริงและโต้แย้งแสดงพยานหลักฐานก่อนมีคำสั่ง (สิทธิในการได้รับฟัง)",
+            options: [
+              { content: "สิทธิออกคำสั่งเอง", isCorrect: false, order: 1 },
+              { content: "สิทธิได้รับฟังและโต้แย้งแสดงพยานหลักฐาน", isCorrect: true, order: 2 },
+              { content: "สิทธิแต่งตั้งเจ้าหน้าที่", isCorrect: false, order: 3 },
+              { content: "สิทธิยกเลิกกฎหมาย", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "หัวหน้ารัฐบาลผู้กำกับการบริหารราชการแผ่นดินคือ?",
+            difficulty: "EASY",
+            explanation: "นายกรัฐมนตรีเป็นหัวหน้ารัฐบาลและกำกับการบริหารราชการแผ่นดิน",
+            options: [
+              { content: "ประธานรัฐสภา", isCorrect: false, order: 1 },
+              { content: "นายกรัฐมนตรี", isCorrect: true, order: 2 },
+              { content: "ปลัดกระทรวง", isCorrect: false, order: 3 },
+              { content: "ผู้ว่าราชการจังหวัด", isCorrect: false, order: 4 },
             ],
           },
         ],
@@ -1885,6 +2370,143 @@ const lessons: Record<string, SeedLesson[]> = {
 - **EU** ใช้สกุลเงิน **ยูโร (Euro)**
 
 > ติดตามข่าวสารปัจจุบันสม่ำเสมอ โดยเฉพาะองค์กรและตัวย่อ`,
+    },
+  ],
+  "symbol-conditions": [
+    {
+      title: "Symbol Conditions",
+      titleTh: "เทคนิคเงื่อนไขสัญลักษณ์",
+      order: 1,
+      content: `# เงื่อนไขสัญลักษณ์ (ออกสอบมากที่สุด ~10 ข้อ)
+
+โจทย์ให้เงื่อนไขด้วยเครื่องหมาย แล้วถามว่าข้อสรุปเป็น **จริง / เท็จ / ไม่แน่นอน**
+
+## ความหมายเครื่องหมาย
+- \`>\` มากกว่า, \`<\` น้อยกว่า
+- \`≥\` มากกว่าหรือเท่ากับ, \`≤\` น้อยกว่าหรือเท่ากับ
+- \`=\` เท่ากับ, \`≠\` ไม่เท่ากับ
+
+## หลักการตอบ 3 แบบ
+1. **จริงแน่นอน** — เป็นจริงทุกกรณีที่เป็นไปได้
+2. **เท็จแน่นอน** — เป็นเท็จทุกกรณี
+3. **ไม่แน่นอน** — บางกรณีจริง บางกรณีเท็จ
+
+## กับดักที่ต้องระวัง
+- เครื่องหมาย \`≥\` / \`≤\` มี "เท่ากับ" ปนอยู่ → มักทำให้สรุปเป็น "ไม่แน่นอน"
+- ถ้าเชื่อมด้วย \`>\` หรือ \`<\` ล้วน ๆ จะสรุปเด็ดขาดได้
+- ตัวอย่าง: A ≥ B, B = C → ได้แค่ A ≥ C (สรุป A=C ไม่ได้ = ไม่แน่นอน)
+
+## เทคนิค
+เขียนเรียงเป็นโซ่เดียว เช่น A = B > C ≥ D แล้วไล่อ่านจากซ้ายไปขวา
+
+> ถ้ามี ≥ หรือ ≤ คั่นกลาง ให้สงสัยคำตอบ "ไม่แน่นอน" ไว้ก่อน`,
+    },
+  ],
+  "table-reading": [
+    {
+      title: "Table & Data Interpretation",
+      titleTh: "เทคนิคอ่านตารางและข้อมูล",
+      order: 1,
+      content: `# การอ่านตารางและข้อมูล (~5 ข้อ)
+
+โจทย์ให้ตาราง/กราฟ แล้วถามให้คำนวณหรือเปรียบเทียบ
+
+## สูตรที่ใช้บ่อย
+- **ผลรวม** = บวกค่าทุกช่องที่เกี่ยวข้อง
+- **ค่าเฉลี่ย** = ผลรวม ÷ จำนวนรายการ
+- **ร้อยละของทั้งหมด** = (ส่วนที่สนใจ ÷ ทั้งหมด) × 100
+- **เปอร์เซ็นต์การเปลี่ยนแปลง** = (ค่าใหม่ − ค่าเก่า) ÷ ค่าเก่า × 100
+
+## ขั้นตอนทำข้อสอบ
+1. อ่าน **หัวตาราง/หน่วย** ให้ชัด (บาท, คน, ล้าน)
+2. ขีดเฉพาะแถว/คอลัมน์ที่โจทย์ถาม อย่าคำนวณทั้งตาราง
+3. ระวังหน่วย เช่น "ล้านบาท" กับ "บาท"
+
+## ลด/เพิ่มราคา
+- ลด x% → จ่าย = ราคา × (100 − x)/100
+- เพิ่ม x% → ราคาใหม่ = ราคา × (100 + x)/100
+
+> โจทย์ตารางมักไม่ยาก แต่กินเวลา ฝึกอ่านเร็วและจับเฉพาะตัวเลขที่ใช้`,
+    },
+  ],
+  "sentence-ordering": [
+    {
+      title: "Sentence Ordering",
+      titleTh: "เทคนิคการเรียงประโยค",
+      order: 1,
+      content: `# การเรียงประโยค (~5 ข้อ)
+
+โจทย์ให้ข้อความย่อย ๆ แล้วเรียงให้เป็นประโยค/ย่อหน้าที่สมบูรณ์
+
+## หลักการเรียง
+1. หา **ประโยคนำ** (บทนำกว้าง ๆ บอกหัวข้อ) ไว้ต้น
+2. เรียงตาม **ลำดับเหตุการณ์/เหตุ-ผล** (ก่อน → หลัง)
+3. **ประโยคปิด** มักมีคำว่า "ดังนั้น / จึง / สรุปได้ว่า" ไว้ท้าย
+
+## คำที่บอกตำแหน่ง
+- ขึ้นต้น: "ประการแรก", หัวข้อกว้าง ๆ
+- กลาง/เพิ่มเติม: "นอกจากนี้", "อีกทั้ง", "เช่น"
+- ปิดท้าย: "ดังนั้น", "จึง", "สรุป"
+
+## ระวัง
+- คำสรรพนาม (เขา มัน นี้) ต้องมีคำนามที่อ้างถึงมาก่อนเสมอ
+- คำเชื่อม "จึง / ดังนั้น" ห้ามอยู่ประโยคแรก
+
+> อ่านทุกตัวเลือกก่อน แล้วมองหา "ตัวเริ่ม" กับ "ตัวจบ" ให้เจอก่อน`,
+    },
+  ],
+  "english-conversation": [
+    {
+      title: "English Conversation",
+      titleTh: "บทสนทนาภาษาอังกฤษที่ออกสอบ",
+      order: 1,
+      content: `# English Conversation (~5 ข้อ)
+
+โจทย์ให้บทสนทนา แล้วเลือกประโยคที่เหมาะกับสถานการณ์
+
+## วลีตอบรับที่ต้องจำ
+| สถานการณ์ | ตอบ |
+|-----------|-----|
+| Thank you. | **You're welcome.** |
+| Would you like...? | **Yes, please. / No, thank you.** |
+| I'm sorry. | **That's all right. / Never mind.** |
+| Nice to meet you. | **Nice to meet you, too.** |
+
+## โทรศัพท์ (Telephone)
+- "May I speak to...?" → **"Hold on, please."** (รอสักครู่)
+- "Who's calling?" → "This is ... speaking."
+
+## ถามทาง (Directions)
+- "Could you tell me the way to...?" → "Go straight ahead / Turn left."
+
+## ร้านอาหาร
+- "Are you ready to order?" → "Just a moment, please."
+
+> จำเป็น "คู่บทสนทนา" คำถาม–คำตอบ จะเลือกได้เร็วและแม่น`,
+    },
+  ],
+  "administrative-law": [
+    {
+      title: "Administrative Law",
+      titleTh: "สรุปกฎหมายปกครองและการบริหารราชการ",
+      order: 1,
+      content: `# กฎหมายปกครองและการบริหารราชการ
+
+## การบริหารราชการแผ่นดิน แบ่ง 3 ส่วน
+1. **ส่วนกลาง** — กระทรวง ทบวง กรม
+2. **ส่วนภูมิภาค** — จังหวัด, อำเภอ (ผู้ว่าฯ เป็นหัวหน้าในจังหวัด)
+3. **ส่วนท้องถิ่น** — อบต. เทศบาล อบจ. กทม. เมืองพัทยา
+
+- **นายกรัฐมนตรี** เป็นหัวหน้ารัฐบาล กำกับการบริหารราชการแผ่นดิน
+
+## พ.ร.ฎ. การบริหารกิจการบ้านเมืองที่ดี
+มุ่ง **ประโยชน์สุขของประชาชน** เกิดผลสัมฤทธิ์ มีประสิทธิภาพและคุ้มค่า ลดขั้นตอน อำนวยความสะดวก
+
+## พ.ร.บ. วิธีปฏิบัติราชการทางปกครอง
+- **คำสั่งทางปกครอง**: การใช้อำนาจของเจ้าหน้าที่ที่กระทบสิทธิของบุคคล (เช่น ออก/เพิกถอนใบอนุญาต)
+- **สิทธิคู่กรณี**: ได้รับแจ้งข้อเท็จจริงและ **โต้แย้งแสดงพยานหลักฐาน** ก่อนมีคำสั่ง
+
+> กฎหมายชุดนี้ออกสอบมากในภาค ก ส่วน "ความรู้ความเป็นข้าราชการที่ดี" จำคำสำคัญและตัวเลขให้แม่น`,
     },
   ],
 };

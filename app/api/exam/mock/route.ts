@@ -1,13 +1,14 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
-// สัดส่วนข้อสอบเสมือนจริง ก.พ. ภาค ก (รวม ~40 ข้อ ปรับตามจำนวนข้อที่มีจริง)
+// สัดส่วนข้อสอบเสมือนจริง อิงโครงสร้างสนามจริง ก.พ. ภาค ก
+// วิชาคิดวิเคราะห์ ~50% · ภาษาอังกฤษ ~25% · ความเป็นข้าราชการที่ดี ~25%
 const BLUEPRINT: Record<string, number> = {
-  "general-ability": 15, // ความสามารถทั่วไป (คณิต/อนุกรม/ตรรกะ)
-  "thai-language": 10, // ภาษาไทย
-  english: 8, // ภาษาอังกฤษ
-  "civil-service": 4, // กฎหมาย/ระเบียบ
-  "general-knowledge": 3, // ความรู้ทั่วไป
+  "general-ability": 20, // คณิต/อนุกรม/เงื่อนไขสัญลักษณ์/ตาราง/อุปมา
+  "thai-language": 12, // ภาษาไทย (อยู่ในวิชาคิดวิเคราะห์)
+  english: 12, // ภาษาอังกฤษ
+  "civil-service": 12, // กฎหมายปกครอง/ระเบียบ/จริยธรรม
+  "general-knowledge": 4, // ความรู้ทั่วไป
 };
 
 function pickRandom<T>(arr: T[], n: number): T[] {
