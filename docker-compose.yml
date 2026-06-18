@@ -1,0 +1,17 @@
+version: "3.8"
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: kp-exam-db
+    environment:
+      POSTGRES_USER: kpexam
+      POSTGRES_PASSWORD: kpexam123
+      POSTGRES_DB: kpexamdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - kp_postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  kp_postgres_data:
