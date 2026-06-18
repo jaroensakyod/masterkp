@@ -30,6 +30,7 @@ export default function Navbar() {
 
   const nav = [
     { href: "/dashboard", label: "หน้าหลัก" },
+    { href: "/lessons", label: "บทเรียน" },
     { href: "/subjects", label: "วิชา" },
     { href: "/exam", label: "สอบจำลอง" },
     { href: "/analytics", label: "วิเคราะห์" },

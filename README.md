@@ -1,36 +1,89 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# KP Exam — เว็บแอปติวสอบ ก.พ. ภาค ก
 
-## Getting Started
+เว็บแอปพลิเคชันสำหรับเตรียมสอบ **ก.พ. ภาค ก** (ภาคความรู้ความสามารถทั่วไป) พร้อมระบบ
+บทเรียน ข้อสอบ/แบบฝึกหัด ชุดสอบจำลองเสมือนจริง และระบบเก็บคะแนน/ระดับ (XP & Achievements)
 
-First, run the development server:
+สร้างด้วย **Next.js 16 (App Router) · Prisma · SQLite · NextAuth · Tailwind CSS**
+
+## ฟีเจอร์หลัก
+
+- 📖 **บทเรียน / เนื้อหา** — สรุปสูตรและเทคนิคแต่ละหัวข้อ (รองรับ Markdown) พร้อมปุ่มไปฝึกข้อสอบต่อ
+- 📝 **แบบฝึกหัดรายหัวข้อ** — ฝึกทำข้อสอบทีละข้อพร้อมเฉลยและคำอธิบายทันที
+- 🧪 **สอบจำลองเสมือนจริง (Mock Exam)** — สุ่มข้อสอบตามสัดส่วนสนามจริง ก.พ. พร้อมจับเวลา
+- 📊 **วิเคราะห์ผล & ประวัติการสอบ** — ดูจุดอ่อนรายวิชาและสถิติย้อนหลัง
+- 🏆 **Gamification** — XP, ระดับ (Level), สตรีค และ Achievement
+- 🔐 **ระบบสมาชิก** — สมัคร/เข้าสู่ระบบด้วย NextAuth พร้อมบทบาท USER / ADMIN
+
+## วิชาที่ครอบคลุม (อิงแนว ก.พ. ภาค ก)
+
+| วิชา | หัวข้อย่อย |
+|------|-----------|
+| ความสามารถทั่วไป | อนุกรมตัวเลข · ตรรกศาสตร์และเงื่อนไข · อุปมาอุปไมย |
+| ภาษาไทย | ไวยากรณ์และการสะกดคำ · การอ่านจับใจความ · สำนวนและสุภาษิต |
+| ภาษาอังกฤษ | Grammar & Vocabulary · Reading Comprehension |
+| ระเบียบราชการ | พรบ. ระเบียบข้าราชการพลเรือน 2551 · จริยธรรมข้าราชการ |
+| ความรู้ทั่วไป | ประวัติศาสตร์และสังคมไทย · เหตุการณ์ปัจจุบัน |
+
+## เริ่มต้นใช้งาน
+
+### 1. ติดตั้ง dependencies
+
+```bash
+npm install
+```
+
+### 2. ตั้งค่า environment
+
+สร้างไฟล์ `.env`:
+
+```env
+DATABASE_URL="file:./dev.db"
+AUTH_SECRET="<สุ่มด้วย: openssl rand -base64 32>"
+ANTHROPIC_API_KEY="<ถ้าจะใช้ฟีเจอร์ AI อธิบายข้อสอบ>"
+```
+
+### 3. เตรียมฐานข้อมูล
+
+```bash
+npm run db:migrate   # สร้างตารางตาม schema
+npm run db:seed      # ใส่ข้อมูลตั้งต้น (วิชา/หัวข้อ/ข้อสอบ/บทเรียน)
+```
+
+### 4. รันเซิร์ฟเวอร์
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+เปิด [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+บัญชีแอดมินตัวอย่างจาก seed: `admin@kpexam.com` / `admin1234`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## คำสั่งที่ใช้บ่อย
 
-## Learn More
+| คำสั่ง | หน้าที่ |
+|--------|--------|
+| `npm run dev` | รัน dev server |
+| `npm run build` | build สำหรับ production |
+| `npm run db:migrate` | สร้าง/ปรับ schema ฐานข้อมูล |
+| `npm run db:seed` | seed ข้อมูล (รันซ้ำได้ ไม่เกิดข้อมูลซ้ำ) |
+| `npm run db:studio` | เปิด Prisma Studio ดู/แก้ข้อมูล |
 
-To learn more about Next.js, take a look at the following resources:
+## โครงสร้างหลัก
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+app/
+  (main)/          หน้าใช้งานหลัก (dashboard, lessons, subjects, exam, practice, ...)
+  (admin)/         หน้าแอดมิน
+  api/             API routes (lessons, exam/mock, questions, ...)
+components/        UI components ที่ใช้ร่วมกัน
+lib/               prisma client, ai, xp, utils
+prisma/
+  schema.prisma    โครงสร้างฐานข้อมูล
+  seed.ts          ข้อมูลตั้งต้น (วิชา/หัวข้อ/ข้อสอบ/บทเรียน/achievements)
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## หมายเหตุ
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+ข้อสอบและเนื้อหาบทเรียนทั้งหมดเขียนขึ้นใหม่ในแนวเดียวกับสนามสอบจริง เพื่อใช้ฝึกฝน
+มิได้คัดลอกข้อสอบที่มีลิขสิทธิ์มาโดยตรง

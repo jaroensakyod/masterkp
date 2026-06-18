@@ -1,29 +1,55 @@
-﻿import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
 
-const subjects = [
+type SeedOption = { content: string; isCorrect: boolean; order: number };
+type SeedQuestion = {
+  content: string;
+  difficulty: string;
+  explanation: string;
+  options: SeedOption[];
+};
+type SeedTopic = {
+  name: string;
+  nameTh: string;
+  slug: string;
+  description: string;
+  order: number;
+  questions: SeedQuestion[];
+};
+type SeedSubject = {
+  name: string;
+  nameTh: string;
+  slug: string;
+  description: string;
+  icon: string;
+  color: string;
+  order: number;
+  topics: SeedTopic[];
+};
+
+const subjects: SeedSubject[] = [
   {
     name: "Verbal & Numerical Reasoning",
-    nameTh: "เธเธงเธฒเธกเธชเธฒเธกเธฒเธฃเธ–เธ—เธฑเนเธงเนเธ",
+    nameTh: "ความสามารถทั่วไป",
     slug: "general-ability",
-    description: "เธ—เธ”เธชเธญเธเธเธงเธฒเธกเธชเธฒเธกเธฒเธฃเธ–เธ”เนเธฒเธเธ•เธฑเธงเน€เธฅเธ เธ•เธฃเธฃเธเธฐ เนเธฅเธฐเธญเธเธธเธเธฃเธก",
-    icon: "๐งฎ",
+    description: "ทดสอบความสามารถด้านตัวเลข ตรรกะ และการอุปมา",
+    icon: "🧮",
     color: "#3B82F6",
     order: 1,
     topics: [
       {
         name: "Number Series",
-        nameTh: "เธญเธเธธเธเธฃเธกเธ•เธฑเธงเน€เธฅเธ",
+        nameTh: "อนุกรมตัวเลข",
         slug: "number-series",
-        description: "เธซเธฒเธ•เธฑเธงเน€เธฅเธเธฅเธณเธ”เธฑเธเธ•เนเธญเนเธเนเธเธญเธเธธเธเธฃเธก",
+        description: "หาตัวเลขลำดับต่อไปของอนุกรม",
         order: 1,
         questions: [
           {
             content: "2, 4, 8, 16, ?",
             difficulty: "EASY",
-            explanation: "เธญเธเธธเธเธฃเธกเธเธนเธ“ 2 เธ—เธธเธเธ•เธฑเธง: 2ร—2=4, 4ร—2=8, 8ร—2=16, 16ร—2=32",
+            explanation: "อนุกรมคูณ 2 ทุกตัว: 16×2 = 32",
             options: [
               { content: "24", isCorrect: false, order: 1 },
               { content: "32", isCorrect: true, order: 2 },
@@ -34,7 +60,7 @@ const subjects = [
           {
             content: "3, 6, 11, 18, 27, ?",
             difficulty: "MEDIUM",
-            explanation: "เธเธฅเธ•เนเธฒเธเน€เธเธดเนเธกเธเธถเนเธเธ—เธตเธฅเธฐ 2: +3, +5, +7, +9, +11 โ’ 27+11=38",
+            explanation: "ผลต่างเพิ่มทีละ 2: +3, +5, +7, +9, +11 → 27+11 = 38",
             options: [
               { content: "36", isCorrect: false, order: 1 },
               { content: "38", isCorrect: true, order: 2 },
@@ -45,7 +71,7 @@ const subjects = [
           {
             content: "1, 1, 2, 3, 5, 8, ?",
             difficulty: "EASY",
-            explanation: "เธญเธเธธเธเธฃเธกเธเธตเนเธเธเธฑเธเธเธต: เนเธ•เนเธฅเธฐเธ•เธฑเธงเธเธทเธญเธเธฅเธเธงเธเธเธญเธเธชเธญเธเธ•เธฑเธงเธเนเธญเธเธซเธเนเธฒ 5+8=13",
+            explanation: "อนุกรมฟีโบนักชี: ตัวถัดไป = ผลบวกของสองตัวก่อนหน้า 5+8 = 13",
             options: [
               { content: "11", isCorrect: false, order: 1 },
               { content: "12", isCorrect: false, order: 2 },
@@ -56,7 +82,7 @@ const subjects = [
           {
             content: "100, 95, 85, 70, 50, ?",
             difficulty: "MEDIUM",
-            explanation: "เธเธฅเธ•เนเธฒเธเน€เธเธดเนเธกเธเธถเนเธเธ—เธตเธฅเธฐ 5: -5, -10, -15, -20, -25 โ’ 50-25=25",
+            explanation: "ผลต่างเพิ่มทีละ 5: -5, -10, -15, -20, -25 → 50-25 = 25",
             options: [
               { content: "20", isCorrect: false, order: 1 },
               { content: "25", isCorrect: true, order: 2 },
@@ -67,7 +93,7 @@ const subjects = [
           {
             content: "2, 3, 5, 8, 12, 17, ?",
             difficulty: "MEDIUM",
-            explanation: "เธเธฅเธ•เนเธฒเธเน€เธเธดเนเธกเธเธถเนเธเธ—เธตเธฅเธฐ 1: +1, +2, +3, +4, +5, +6 โ’ 17+6=23",
+            explanation: "ผลต่างเพิ่มทีละ 1: +1, +2, +3, +4, +5, +6 → 17+6 = 23",
             options: [
               { content: "22", isCorrect: false, order: 1 },
               { content: "23", isCorrect: true, order: 2 },
@@ -75,19 +101,118 @@ const subjects = [
               { content: "25", isCorrect: false, order: 4 },
             ],
           },
+          {
+            content: "5, 10, 20, 40, ?",
+            difficulty: "EASY",
+            explanation: "คูณ 2 ทุกตัว: 40×2 = 80",
+            options: [
+              { content: "60", isCorrect: false, order: 1 },
+              { content: "70", isCorrect: false, order: 2 },
+              { content: "80", isCorrect: true, order: 3 },
+              { content: "100", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "81, 27, 9, 3, ?",
+            difficulty: "EASY",
+            explanation: "หารด้วย 3 ทุกตัว: 3÷3 = 1",
+            options: [
+              { content: "1", isCorrect: true, order: 1 },
+              { content: "2", isCorrect: false, order: 2 },
+              { content: "0", isCorrect: false, order: 3 },
+              { content: "1.5", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "1, 4, 9, 16, 25, ?",
+            difficulty: "EASY",
+            explanation: "กำลังสองของจำนวนนับ: 6² = 36",
+            options: [
+              { content: "30", isCorrect: false, order: 1 },
+              { content: "36", isCorrect: true, order: 2 },
+              { content: "49", isCorrect: false, order: 3 },
+              { content: "35", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "2, 6, 12, 20, 30, ?",
+            difficulty: "MEDIUM",
+            explanation: "ผลต่างเพิ่มทีละ 2: +4, +6, +8, +10, +12 → 30+12 = 42",
+            options: [
+              { content: "40", isCorrect: false, order: 1 },
+              { content: "42", isCorrect: true, order: 2 },
+              { content: "44", isCorrect: false, order: 3 },
+              { content: "36", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "3, 9, 27, 81, ?",
+            difficulty: "EASY",
+            explanation: "คูณ 3 ทุกตัว: 81×3 = 243",
+            options: [
+              { content: "162", isCorrect: false, order: 1 },
+              { content: "243", isCorrect: true, order: 2 },
+              { content: "108", isCorrect: false, order: 3 },
+              { content: "240", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "1, 2, 4, 7, 11, 16, ?",
+            difficulty: "MEDIUM",
+            explanation: "ผลต่างเพิ่มทีละ 1: +1, +2, +3, +4, +5, +6 → 16+6 = 22",
+            options: [
+              { content: "21", isCorrect: false, order: 1 },
+              { content: "22", isCorrect: true, order: 2 },
+              { content: "23", isCorrect: false, order: 3 },
+              { content: "20", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "2, 5, 11, 23, 47, ?",
+            difficulty: "HARD",
+            explanation: "คูณ 2 บวก 1: 2×2+1=5, 5×2+1=11, ... 47×2+1 = 95",
+            options: [
+              { content: "94", isCorrect: false, order: 1 },
+              { content: "95", isCorrect: true, order: 2 },
+              { content: "96", isCorrect: false, order: 3 },
+              { content: "93", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "1, 3, 6, 10, 15, 21, ?",
+            difficulty: "MEDIUM",
+            explanation: "จำนวนสามเหลี่ยม ผลต่างเพิ่มทีละ 1: +2,+3,+4,+5,+6,+7 → 21+7 = 28",
+            options: [
+              { content: "27", isCorrect: false, order: 1 },
+              { content: "28", isCorrect: true, order: 2 },
+              { content: "29", isCorrect: false, order: 3 },
+              { content: "26", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "4, 8, 16, 32, 64, ?",
+            difficulty: "EASY",
+            explanation: "คูณ 2 ทุกตัว: 64×2 = 128",
+            options: [
+              { content: "96", isCorrect: false, order: 1 },
+              { content: "128", isCorrect: true, order: 2 },
+              { content: "100", isCorrect: false, order: 3 },
+              { content: "124", isCorrect: false, order: 4 },
+            ],
+          },
         ],
       },
       {
         name: "Logic & Reasoning",
-        nameTh: "เธ•เธฃเธฃเธเธจเธฒเธชเธ•เธฃเน",
+        nameTh: "ตรรกศาสตร์และเงื่อนไข",
         slug: "logic-reasoning",
-        description: "เธเธถเธเธ—เธฑเธเธฉเธฐเธเธฒเธฃเธเธดเธ”เน€เธเธดเธเธ•เธฃเธฃเธเธฐเนเธฅเธฐเธเธฒเธฃเธญเธเธธเธกเธฒเธ",
+        description: "ฝึกทักษะการคิดเชิงตรรกะและการอุปมาน",
         order: 2,
         questions: [
           {
-            content: "เธ–เนเธฒ A > B เนเธฅเธฐ B > C เนเธฅเนเธง เธเนเธญเนเธ”เธ•เนเธญเนเธเธเธตเนเธ–เธนเธเธ•เนเธญเธ?",
+            content: "ถ้า A > B และ B > C แล้ว ข้อใดต่อไปนี้ถูกต้อง?",
             difficulty: "EASY",
-            explanation: "เธเธฒเธเธเธ Transitive: เธ–เนเธฒ A>B เนเธฅเธฐ B>C เธ”เธฑเธเธเธฑเนเธ A>C",
+            explanation: "กฎถ่ายทอด (Transitive): ถ้า A>B และ B>C ดังนั้น A>C",
             options: [
               { content: "C > A", isCorrect: false, order: 1 },
               { content: "A > C", isCorrect: true, order: 2 },
@@ -96,111 +221,254 @@ const subjects = [
             ],
           },
           {
-            content: "เธเธฑเธเน€เธฃเธตเธขเธเธ—เธธเธเธเธเนเธเธซเนเธญเธเธเธตเนเธเธญเธเธเธ“เธดเธ•เธจเธฒเธชเธ•เธฃเน เธชเธกเธเธฒเธขเน€เธเนเธเธเธฑเธเน€เธฃเธตเธขเธเนเธเธซเนเธญเธเธเธตเน เธ”เธฑเธเธเธฑเนเธ...",
+            content: "ทุกคนที่ขยันสอบผ่าน และสมชายขยัน ดังนั้น...",
             difficulty: "EASY",
-            explanation: "เธเธฒเธฃเธญเธเธธเธกเธฒเธเนเธเธ Syllogism: เธชเธกเธเธฒเธขเน€เธเนเธเธเธฑเธเน€เธฃเธตเธขเธเนเธเธซเนเธญเธ เธ”เธฑเธเธเธฑเนเธเธชเธกเธเธฒเธขเธเธญเธเธเธ“เธดเธ•เธจเธฒเธชเธ•เธฃเน",
+            explanation: "การอุปมานแบบ Syllogism: สมชายเป็นสมาชิกของกลุ่มคนขยัน ดังนั้นสมชายสอบผ่าน",
             options: [
-              { content: "เธชเธกเธเธฒเธขเนเธกเนเธเธญเธเธเธ“เธดเธ•เธจเธฒเธชเธ•เธฃเน", isCorrect: false, order: 1 },
-              { content: "เธชเธกเธเธฒเธขเธเธญเธเธเธ“เธดเธ•เธจเธฒเธชเธ•เธฃเน", isCorrect: true, order: 2 },
-              { content: "เธเธฑเธเน€เธฃเธตเธขเธเธเธฒเธเธเธเธเธญเธเธเธ“เธดเธ•เธจเธฒเธชเธ•เธฃเน", isCorrect: false, order: 3 },
-              { content: "เนเธกเนเธชเธฒเธกเธฒเธฃเธ–เธชเธฃเธธเธเนเธ”เน", isCorrect: false, order: 4 },
+              { content: "สมชายสอบไม่ผ่าน", isCorrect: false, order: 1 },
+              { content: "สมชายสอบผ่าน", isCorrect: true, order: 2 },
+              { content: "สมชายอาจสอบผ่าน", isCorrect: false, order: 3 },
+              { content: "สรุปไม่ได้", isCorrect: false, order: 4 },
             ],
           },
           {
-            content: "เธ–เนเธฒเน€เธกเธทเนเธญเธงเธฒเธเธเธทเธญเธงเธฑเธเธเธธเธ เธงเธฑเธเธเธตเนเธเธทเธญเธงเธฑเธเธญเธฐเนเธฃ?",
+            content: "ถ้าเมื่อวานคือวันพุธ วันนี้คือวันอะไร?",
             difficulty: "EASY",
-            explanation: "เน€เธกเธทเนเธญเธงเธฒเธเธงเธฑเธเธเธธเธ เธ”เธฑเธเธเธฑเนเธเธงเธฑเธเธเธตเนเธเธทเธญเธงเธฑเธเธเธคเธซเธฑเธชเธเธ”เธต",
+            explanation: "เมื่อวานวันพุธ ดังนั้นวันนี้คือวันพฤหัสบดี",
             options: [
-              { content: "เธงเธฑเธเธญเธฑเธเธเธฒเธฃ", isCorrect: false, order: 1 },
-              { content: "เธงเธฑเธเธเธธเธ", isCorrect: false, order: 2 },
-              { content: "เธงเธฑเธเธเธคเธซเธฑเธชเธเธ”เธต", isCorrect: true, order: 3 },
-              { content: "เธงเธฑเธเธจเธธเธเธฃเน", isCorrect: false, order: 4 },
+              { content: "วันอังคาร", isCorrect: false, order: 1 },
+              { content: "วันพุธ", isCorrect: false, order: 2 },
+              { content: "วันพฤหัสบดี", isCorrect: true, order: 3 },
+              { content: "วันศุกร์", isCorrect: false, order: 4 },
             ],
           },
           {
-            content: "เธกเธตเธเธฅเนเธญเธ 5 เนเธ เนเธ•เนเธฅเธฐเนเธเธกเธตเธฅเธนเธเธเธญเธฅ 8 เธฅเธนเธ เธ–เนเธฒเน€เธญเธฒเธฅเธนเธเธเธญเธฅเธญเธญเธ 12 เธฅเธนเธ เธเธฐเน€เธซเธฅเธทเธญเธฅเธนเธเธเธญเธฅเธเธตเนเธฅเธนเธ?",
+            content: "ดินสอ 3 โหล มีกี่แท่ง?",
             difficulty: "EASY",
-            explanation: "เธฅเธนเธเธเธญเธฅเธ—เธฑเนเธเธซเธกเธ” = 5ร—8 = 40 เธฅเธนเธ; เน€เธซเธฅเธทเธญ = 40-12 = 28 เธฅเธนเธ",
+            explanation: "1 โหล = 12 แท่ง ดังนั้น 3×12 = 36 แท่ง",
             options: [
-              { content: "25 เธฅเธนเธ", isCorrect: false, order: 1 },
-              { content: "26 เธฅเธนเธ", isCorrect: false, order: 2 },
-              { content: "28 เธฅเธนเธ", isCorrect: true, order: 3 },
-              { content: "30 เธฅเธนเธ", isCorrect: false, order: 4 },
+              { content: "30", isCorrect: false, order: 1 },
+              { content: "36", isCorrect: true, order: 2 },
+              { content: "24", isCorrect: false, order: 3 },
+              { content: "42", isCorrect: false, order: 4 },
             ],
           },
           {
-            content: "เนเธ 1 เธชเธฑเธเธ”เธฒเธซเนเธกเธต 7 เธงเธฑเธ เนเธ 4 เธชเธฑเธเธ”เธฒเธซเนเธกเธตเธเธตเนเธงเธฑเธ?",
+            content: "ใน 1 สัปดาห์มี 7 วัน ใน 4 สัปดาห์มีกี่วัน?",
             difficulty: "EASY",
-            explanation: "4 ร— 7 = 28 เธงเธฑเธ",
+            explanation: "4 × 7 = 28 วัน",
             options: [
-              { content: "24 เธงเธฑเธ", isCorrect: false, order: 1 },
-              { content: "28 เธงเธฑเธ", isCorrect: true, order: 2 },
-              { content: "30 เธงเธฑเธ", isCorrect: false, order: 3 },
-              { content: "32 เธงเธฑเธ", isCorrect: false, order: 4 },
+              { content: "24 วัน", isCorrect: false, order: 1 },
+              { content: "28 วัน", isCorrect: true, order: 2 },
+              { content: "30 วัน", isCorrect: false, order: 3 },
+              { content: "32 วัน", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "นก ก เร็วกว่า นก ข, นก ข เร็วกว่า นก ค ตัวใดเร็วที่สุด?",
+            difficulty: "EASY",
+            explanation: "เรียงลำดับ: ก > ข > ค ดังนั้น นก ก เร็วที่สุด",
+            options: [
+              { content: "นก ก", isCorrect: true, order: 1 },
+              { content: "นก ข", isCorrect: false, order: 2 },
+              { content: "นก ค", isCorrect: false, order: 3 },
+              { content: "เท่ากัน", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "ถ้าบางคนในห้องเป็นนักกีฬา ข้อใดถูกต้องเสมอ?",
+            difficulty: "MEDIUM",
+            explanation: "'บางคน' หมายถึงอย่างน้อยหนึ่งคน จึงสรุปได้แค่ว่ามีนักกีฬาอยู่ในห้อง",
+            options: [
+              { content: "ทุกคนเป็นนักกีฬา", isCorrect: false, order: 1 },
+              { content: "มีนักกีฬาอย่างน้อย 1 คนในห้อง", isCorrect: true, order: 2 },
+              { content: "ไม่มีนักกีฬาในห้อง", isCorrect: false, order: 3 },
+              { content: "ครึ่งหนึ่งเป็นนักกีฬา", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "รถออกจากบ้าน 08:00 ถึงที่ทำงานใช้เวลา 45 นาที ถึงกี่โมง?",
+            difficulty: "EASY",
+            explanation: "08:00 + 45 นาที = 08:45",
+            options: [
+              { content: "08:30", isCorrect: false, order: 1 },
+              { content: "08:45", isCorrect: true, order: 2 },
+              { content: "09:00", isCorrect: false, order: 3 },
+              { content: "08:40", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "ถ้า P แล้ว Q. พบว่า Q เป็นเท็จ สรุปได้ว่า?",
+            difficulty: "HARD",
+            explanation: "Modus Tollens: ถ้า P→Q และ Q เป็นเท็จ ดังนั้น P เป็นเท็จ",
+            options: [
+              { content: "P เป็นจริง", isCorrect: false, order: 1 },
+              { content: "P เป็นเท็จ", isCorrect: true, order: 2 },
+              { content: "สรุปไม่ได้", isCorrect: false, order: 3 },
+              { content: "Q เป็นจริง", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "มีไก่และหมูรวมกัน 10 ตัว นับขาได้ 28 ขา มีหมูกี่ตัว?",
+            difficulty: "HARD",
+            explanation: "ถ้าทั้งหมดเป็นไก่จะได้ 20 ขา ขาที่เกิน 28-20=8 มาจากหมู หมูมี 2 ขาเพิ่ม → 8÷2 = 4 ตัว",
+            options: [
+              { content: "3 ตัว", isCorrect: false, order: 1 },
+              { content: "4 ตัว", isCorrect: true, order: 2 },
+              { content: "5 ตัว", isCorrect: false, order: 3 },
+              { content: "6 ตัว", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "วันนี้วันพุธ อีก 10 วันเป็นวันอะไร?",
+            difficulty: "MEDIUM",
+            explanation: "10 ÷ 7 เหลือเศษ 3 นับจากพุธไป 3 วัน = เสาร์",
+            options: [
+              { content: "ศุกร์", isCorrect: false, order: 1 },
+              { content: "เสาร์", isCorrect: true, order: 2 },
+              { content: "อาทิตย์", isCorrect: false, order: 3 },
+              { content: "จันทร์", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "ราคาสินค้า 500 บาท ลด 20% เหลือเท่าไร?",
+            difficulty: "EASY",
+            explanation: "ลด 20% = 100 บาท เหลือ 500 - 100 = 400 บาท",
+            options: [
+              { content: "380 บาท", isCorrect: false, order: 1 },
+              { content: "400 บาท", isCorrect: true, order: 2 },
+              { content: "450 บาท", isCorrect: false, order: 3 },
+              { content: "420 บาท", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "A อายุมากกว่า B 5 ปี, B อายุ 20 ปี A อายุเท่าไร?",
+            difficulty: "EASY",
+            explanation: "A = B + 5 = 20 + 5 = 25 ปี",
+            options: [
+              { content: "15 ปี", isCorrect: false, order: 1 },
+              { content: "25 ปี", isCorrect: true, order: 2 },
+              { content: "20 ปี", isCorrect: false, order: 3 },
+              { content: "30 ปี", isCorrect: false, order: 4 },
             ],
           },
         ],
       },
       {
         name: "Analogies",
-        nameTh: "เธญเธธเธเธกเธฒเธญเธธเธเนเธกเธข",
+        nameTh: "อุปมาอุปไมย",
         slug: "analogies",
-        description: "เธเธงเธฒเธกเธชเธฑเธกเธเธฑเธเธเนเธฃเธฐเธซเธงเนเธฒเธเธเธณเนเธฅเธฐเนเธเธงเธเธดเธ”",
+        description: "ความสัมพันธ์ระหว่างคำและแนวคิด",
         order: 3,
         questions: [
           {
-            content: "เธเธฒเธเธเธฒ : เน€เธเธตเธขเธ เน€เธเนเธเน€เธ”เธตเธขเธงเธเธฑเธ เธกเธตเธ” : ?",
+            content: "นกบิน : ท้องฟ้า เปรียบเหมือนกับ ปลาว่าย : ?",
             difficulty: "EASY",
-            explanation: "เธเธฒเธเธเธฒเนเธเนเน€เธเธตเธขเธ เธกเธตเธ”เนเธเนเธซเธฑเนเธ/เธ•เธฑเธ”",
+            explanation: "นกบินในท้องฟ้า ปลาว่ายในน้ำ จึงเป็นความสัมพันธ์ของถิ่นที่อยู่",
             options: [
-              { content: "เนเธ—เธ", isCorrect: false, order: 1 },
-              { content: "เธซเธฑเนเธ", isCorrect: true, order: 2 },
-              { content: "เธ•เธต", isCorrect: false, order: 3 },
-              { content: "เธขเธดเธ", isCorrect: false, order: 4 },
+              { content: "อากาศ", isCorrect: false, order: 1 },
+              { content: "น้ำ", isCorrect: true, order: 2 },
+              { content: "ทราย", isCorrect: false, order: 3 },
+              { content: "ต้นไม้", isCorrect: false, order: 4 },
             ],
           },
           {
-            content: "เธเธฃเธน : เนเธฃเธเน€เธฃเธตเธขเธ เน€เธเนเธเน€เธ”เธตเธขเธงเธเธฑเธ เนเธเธ—เธขเน : ?",
+            content: "ครู : โรงเรียน เปรียบเหมือนกับ แพทย์ : ?",
             difficulty: "EASY",
-            explanation: "เธเธฃเธนเธ—เธณเธเธฒเธเธ—เธตเนเนเธฃเธเน€เธฃเธตเธขเธ เนเธเธ—เธขเนเธ—เธณเธเธฒเธเธ—เธตเนเนเธฃเธเธเธขเธฒเธเธฒเธฅ",
+            explanation: "ครูทำงานที่โรงเรียน แพทย์ทำงานที่โรงพยาบาล",
             options: [
-              { content: "เธเธฅเธดเธเธดเธ", isCorrect: false, order: 1 },
-              { content: "เนเธฃเธเธเธขเธฒเธเธฒเธฅ", isCorrect: true, order: 2 },
-              { content: "เธชเธ–เธฒเธเธตเธญเธเธฒเธกเธฑเธข", isCorrect: false, order: 3 },
-              { content: "เธซเนเธญเธเธเธเธดเธเธฑเธ•เธดเธเธฒเธฃ", isCorrect: false, order: 4 },
+              { content: "คลินิก", isCorrect: false, order: 1 },
+              { content: "โรงพยาบาล", isCorrect: true, order: 2 },
+              { content: "สถานีอนามัย", isCorrect: false, order: 3 },
+              { content: "ห้องตรวจ", isCorrect: false, order: 4 },
             ],
           },
           {
-            content: "เธเธฅเธฒ : เธเนเธณ เน€เธเนเธเน€เธ”เธตเธขเธงเธเธฑเธ เธเธ : ?",
+            content: "ร้อน : เย็น เปรียบเหมือนกับ สว่าง : ?",
             difficulty: "EASY",
-            explanation: "เธเธฅเธฒเธญเธฒเธจเธฑเธขเธญเธขเธนเนเนเธเธเนเธณ เธเธเธญเธฒเธจเธฑเธขเธญเธขเธนเนเนเธเธญเธฒเธเธฒเธจ/เธ—เนเธญเธเธเนเธฒ",
+            explanation: "ร้อนกับเย็นเป็นคู่ตรงข้าม สว่างกับมืดเป็นคู่ตรงข้าม",
             options: [
-              { content: "เธ•เนเธเนเธกเน", isCorrect: false, order: 1 },
-              { content: "เธญเธฒเธเธฒเธจ", isCorrect: true, order: 2 },
-              { content: "เธ”เธดเธ", isCorrect: false, order: 3 },
-              { content: "เธซเธดเธ", isCorrect: false, order: 4 },
+              { content: "แสง", isCorrect: false, order: 1 },
+              { content: "กลางวัน", isCorrect: false, order: 2 },
+              { content: "มืด", isCorrect: true, order: 3 },
+              { content: "เย็น", isCorrect: false, order: 4 },
             ],
           },
           {
-            content: "เธซเธเธฑเธเธชเธทเธญ : เธซเนเธญเธเธชเธกเธธเธ” เน€เธเนเธเน€เธ”เธตเธขเธงเธเธฑเธ เธขเธฒ : ?",
+            content: "หนังสือ : ห้องสมุด เปรียบเหมือนกับ ยา : ?",
             difficulty: "EASY",
-            explanation: "เธซเธเธฑเธเธชเธทเธญเธญเธขเธนเนเนเธเธซเนเธญเธเธชเธกเธธเธ” เธขเธฒเธญเธขเธนเนเนเธเธฃเนเธฒเธเธเธฒเธขเธขเธฒ/เธเธฅเธฑเธเธขเธฒ",
+            explanation: "หนังสืออยู่ในห้องสมุด ยาอยู่ในร้านขายยา",
             options: [
-              { content: "เนเธฃเธเธเธขเธฒเธเธฒเธฅ", isCorrect: false, order: 1 },
-              { content: "เธฃเนเธฒเธเธเธฒเธขเธขเธฒ", isCorrect: true, order: 2 },
-              { content: "เธ•เธฅเธฒเธ”", isCorrect: false, order: 3 },
-              { content: "เธเธฅเธดเธเธดเธ", isCorrect: false, order: 4 },
+              { content: "โรงพยาบาล", isCorrect: false, order: 1 },
+              { content: "ร้านขายยา", isCorrect: true, order: 2 },
+              { content: "ตลาด", isCorrect: false, order: 3 },
+              { content: "คลินิก", isCorrect: false, order: 4 },
             ],
           },
           {
-            content: "เธฃเนเธญเธ : เธซเธเธฒเธง เน€เธเนเธเน€เธ”เธตเธขเธงเธเธฑเธ เธชเธงเนเธฒเธ : ?",
+            content: "ปากกา : เขียน เปรียบเหมือนกับ มีด : ?",
             difficulty: "EASY",
-            explanation: "เธฃเนเธญเธเนเธฅเธฐเธซเธเธฒเธงเน€เธเนเธเธเธนเนเธ•เธฃเธเธเนเธฒเธก เธชเธงเนเธฒเธเนเธฅเธฐเธกเธทเธ”เน€เธเนเธเธเธนเนเธ•เธฃเธเธเนเธฒเธก",
+            explanation: "ปากกาใช้เขียน มีดใช้หั่น/ตัด",
             options: [
-              { content: "เนเธชเธ", isCorrect: false, order: 1 },
-              { content: "เธเธฅเธฒเธเธเธทเธ", isCorrect: false, order: 2 },
-              { content: "เธกเธทเธ”", isCorrect: true, order: 3 },
-              { content: "เน€เธขเนเธ", isCorrect: false, order: 4 },
+              { content: "แทง", isCorrect: false, order: 1 },
+              { content: "หั่น", isCorrect: true, order: 2 },
+              { content: "ตี", isCorrect: false, order: 3 },
+              { content: "ยิง", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "นิ้ว : มือ เปรียบเหมือนกับ นิ้วเท้า : ?",
+            difficulty: "EASY",
+            explanation: "นิ้วเป็นส่วนของมือ นิ้วเท้าเป็นส่วนของเท้า",
+            options: [
+              { content: "ขา", isCorrect: false, order: 1 },
+              { content: "เท้า", isCorrect: true, order: 2 },
+              { content: "แขน", isCorrect: false, order: 3 },
+              { content: "ส้น", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "2 : 4 เปรียบเหมือนกับ 3 : ?",
+            difficulty: "EASY",
+            explanation: "ความสัมพันธ์คูณ 2: 2×2=4 ดังนั้น 3×2 = 6",
+            options: [
+              { content: "5", isCorrect: false, order: 1 },
+              { content: "6", isCorrect: true, order: 2 },
+              { content: "9", isCorrect: false, order: 3 },
+              { content: "8", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "หิว : กิน เปรียบเหมือนกับ ง่วง : ?",
+            difficulty: "EASY",
+            explanation: "หิวจึงกิน ง่วงจึงนอน เป็นความสัมพันธ์เหตุ-ผล",
+            options: [
+              { content: "ตื่น", isCorrect: false, order: 1 },
+              { content: "นอน", isCorrect: true, order: 2 },
+              { content: "เดิน", isCorrect: false, order: 3 },
+              { content: "วิ่ง", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "ใหญ่ : เล็ก เปรียบเหมือนกับ สูง : ?",
+            difficulty: "EASY",
+            explanation: "ใหญ่กับเล็กเป็นคู่ตรงข้าม สูงกับเตี้ยเป็นคู่ตรงข้าม",
+            options: [
+              { content: "ยาว", isCorrect: false, order: 1 },
+              { content: "เตี้ย", isCorrect: true, order: 2 },
+              { content: "อ้วน", isCorrect: false, order: 3 },
+              { content: "กว้าง", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "วงกลม : ทรงกลม เปรียบเหมือนกับ สี่เหลี่ยม : ?",
+            difficulty: "MEDIUM",
+            explanation: "วงกลมเป็นรูป 2 มิติของทรงกลม สี่เหลี่ยมเป็นรูป 2 มิติของลูกบาศก์",
+            options: [
+              { content: "สามเหลี่ยม", isCorrect: false, order: 1 },
+              { content: "ลูกบาศก์", isCorrect: true, order: 2 },
+              { content: "พีระมิด", isCorrect: false, order: 3 },
+              { content: "ทรงกระบอก", isCorrect: false, order: 4 },
             ],
           },
         ],
@@ -209,201 +477,388 @@ const subjects = [
   },
   {
     name: "Thai Language",
-    nameTh: "เธ เธฒเธฉเธฒเนเธ—เธข",
+    nameTh: "ภาษาไทย",
     slug: "thai-language",
-    description: "เธ—เธ”เธชเธญเธเธเธงเธฒเธกเธฃเธนเนเธ เธฒเธฉเธฒเนเธ—เธข เนเธงเธขเธฒเธเธฃเธ“เน เนเธฅเธฐเธเธฒเธฃเธญเนเธฒเธ",
-    icon: "๐“–",
+    description: "ทดสอบความรู้ภาษาไทย ไวยากรณ์ และการอ่าน",
+    icon: "📖",
     color: "#EF4444",
     order: 2,
     topics: [
       {
         name: "Grammar & Spelling",
-        nameTh: "เนเธงเธขเธฒเธเธฃเธ“เนเนเธฅเธฐเธเธฒเธฃเธชเธฐเธเธ”เธเธณ",
+        nameTh: "ไวยากรณ์และการสะกดคำ",
         slug: "thai-grammar",
-        description: "เนเธงเธขเธฒเธเธฃเธ“เนเธ เธฒเธฉเธฒเนเธ—เธขเนเธฅเธฐเธเธฒเธฃเธชเธฐเธเธ”เธเธณเธ—เธตเนเธ–เธนเธเธ•เนเธญเธ",
+        description: "ไวยากรณ์ภาษาไทยและการสะกดคำที่ถูกต้อง",
         order: 1,
         questions: [
           {
-            content: "เธเนเธญเนเธ”เน€เธเธตเธขเธเธ–เธนเธเธ•เนเธญเธเธ•เธฒเธกเธซเธฅเธฑเธเธ เธฒเธฉเธฒเนเธ—เธข?",
+            content: "ข้อใดเขียนถูกต้องตามหลักภาษาไทย?",
             difficulty: "MEDIUM",
-            explanation: "'เธเธฐเธ—เธด' เน€เธเนเธเธเธฒเธฃเธชเธฐเธเธ”เธ—เธตเนเธ–เธนเธเธ•เนเธญเธ เธ•เธฒเธกเธเธเธเธฒเธเธธเธเธฃเธกเธฃเธฒเธเธเธฑเธ“เธ‘เธดเธ•เธขเธชเธ–เธฒเธ",
+            explanation: "'อนุญาต' สะกดด้วย ญ และไม่มี ิ ที่ ต ไม่ใช่ 'อนุญาติ'",
             options: [
-              { content: "เธเธฃเธฐเธ—เธด", isCorrect: false, order: 1 },
-              { content: "เธเธฐเธ—เธด", isCorrect: true, order: 2 },
-              { content: "เธเธฃเธฐเธ—เธต", isCorrect: false, order: 3 },
-              { content: "เธเธฐเธ—เธต", isCorrect: false, order: 4 },
+              { content: "อนุญาติ", isCorrect: false, order: 1 },
+              { content: "อนุญาต", isCorrect: true, order: 2 },
+              { content: "อณุญาต", isCorrect: false, order: 3 },
+              { content: "อนุญาด", isCorrect: false, order: 4 },
             ],
           },
           {
-            content: "เธเธณเนเธ”เธ•เนเธญเนเธเธเธตเนเธกเธตเธเธงเธฒเธกเธซเธกเธฒเธขเธ•เธฃเธเธเธฑเธเธเธณเธงเนเธฒ 'เธกเธซเธดเธกเธฒ'?",
+            content: "คำใดสะกดถูกต้อง (ใบไม้ที่ใช้ทำอาหาร)?",
             difficulty: "MEDIUM",
-            explanation: "เธกเธซเธดเธกเธฒ เธซเธกเธฒเธขเธ–เธถเธ เธเธงเธฒเธกเธขเธดเนเธเนเธซเธเน, เธเธงเธฒเธกเธชเธณเธเธฑเธ, เธเธงเธฒเธกเน€เธเธฃเธตเธขเธเนเธเธฃ",
+            explanation: "'กะเพรา' สะกดด้วย กะ ไม่ใช่ 'กระเพรา'",
             options: [
-              { content: "เธเธงเธฒเธกเธเนเธฒเธเธฅเธฑเธง", isCorrect: false, order: 1 },
-              { content: "เธเธงเธฒเธกเธขเธดเนเธเนเธซเธเน", isCorrect: true, order: 2 },
-              { content: "เธเธงเธฒเธกเธชเธงเธขเธเธฒเธก", isCorrect: false, order: 3 },
-              { content: "เธเธงเธฒเธกเน€เธกเธ•เธ•เธฒ", isCorrect: false, order: 4 },
+              { content: "กระเพรา", isCorrect: false, order: 1 },
+              { content: "กะเพรา", isCorrect: true, order: 2 },
+              { content: "กะเพา", isCorrect: false, order: 3 },
+              { content: "กระเพา", isCorrect: false, order: 4 },
             ],
           },
           {
-            content: "เธเธฃเธฐเนเธขเธเนเธ”เนเธเนเธเธณเธงเนเธฒ 'เนเธ”เธข' เนเธ”เนเธ–เธนเธเธ•เนเธญเธ?",
-            difficulty: "MEDIUM",
-            explanation: "'เธฃเธฒเธขเธเธฒเธเธเธตเนเธเธฑเธ”เธ—เธณเนเธ”เธขเธเธฑเธเธจเธถเธเธฉเธฒ' เนเธเน 'เนเธ”เธข' เนเธชเธ”เธเธเธนเนเธเธฃเธฐเธ—เธณ เธเธถเนเธเธ–เธนเธเธ•เนเธญเธ",
-            options: [
-              { content: "เน€เธเธฒเนเธเนเธฃเธเน€เธฃเธตเธขเธเนเธ”เธขเธฃเธ–เธขเธเธ•เน", isCorrect: false, order: 1 },
-              { content: "เธฃเธฒเธขเธเธฒเธเธเธตเนเธเธฑเธ”เธ—เธณเนเธ”เธขเธเธฑเธเธจเธถเธเธฉเธฒ", isCorrect: true, order: 2 },
-              { content: "เน€เธเธญเธฃเนเธญเธเนเธซเนเนเธ”เธขเน€เธซเธ•เธธเธเธฅ", isCorrect: false, order: 3 },
-              { content: "เนเธ”เธขเธ—เธตเนเน€เธเธฒเน€เธ”เธดเธเนเธ", isCorrect: false, order: 4 },
-            ],
-          },
-          {
-            content: "เธเธณเธงเนเธฒ 'เธเธฃเธฃเธ—เธฑเธ”' เธกเธตเธเธตเนเธเธขเธฒเธเธเน?",
+            content: "ข้อใดเขียนถูกต้อง (ชื่ออาหาร)?",
             difficulty: "EASY",
-            explanation: "เธเธฃเธฃเธ—เธฑเธ” เนเธเนเธเน€เธเนเธ เธเธฑเธ-เธ—เธฑเธ” = 2 เธเธขเธฒเธเธเน",
+            explanation: "'ผัดไทย' ใช้ ผัด (คนให้เข้ากัน) ไม่ใช่ 'พัด' หรือ 'ผัส'",
             options: [
-              { content: "1 เธเธขเธฒเธเธเน", isCorrect: false, order: 1 },
-              { content: "2 เธเธขเธฒเธเธเน", isCorrect: true, order: 2 },
-              { content: "3 เธเธขเธฒเธเธเน", isCorrect: false, order: 3 },
-              { content: "4 เธเธขเธฒเธเธเน", isCorrect: false, order: 4 },
+              { content: "พัดไทย", isCorrect: false, order: 1 },
+              { content: "ผัดไทย", isCorrect: true, order: 2 },
+              { content: "ผัสไทย", isCorrect: false, order: 3 },
+              { content: "ภัดไทย", isCorrect: false, order: 4 },
             ],
           },
           {
-            content: "เธเนเธญเนเธ”เน€เธเนเธเธเธณเธฃเธฒเธเธฒเธจเธฑเธเธ—เนเธเธญเธเธเธณเธงเนเธฒ 'เธเธดเธ'?",
+            content: "ข้อใดใช้ลักษณนามถูกต้อง?",
             difficulty: "MEDIUM",
-            explanation: "เธเธณเธฃเธฒเธเธฒเธจเธฑเธเธ—เนเธเธญเธ 'เธเธดเธ' เธเธทเธญ 'เน€เธชเธงเธข' (เธชเธณเธซเธฃเธฑเธเธเธฃเธฐเธกเธซเธฒเธเธฉเธฑเธ•เธฃเธดเธขเน)",
+            explanation: "พระสงฆ์ใช้ลักษณนาม 'รูป' เช่น พระ 3 รูป",
             options: [
-              { content: "เธฃเธฑเธเธเธฃเธฐเธ—เธฒเธ", isCorrect: false, order: 1 },
-              { content: "เน€เธชเธงเธข", isCorrect: true, order: 2 },
-              { content: "เธเธฑเธ", isCorrect: false, order: 3 },
-              { content: "เธเธฃเธดเนเธ เธ", isCorrect: false, order: 4 },
+              { content: "พระ 3 องค์", isCorrect: false, order: 1 },
+              { content: "พระ 3 รูป", isCorrect: true, order: 2 },
+              { content: "พระ 3 คน", isCorrect: false, order: 3 },
+              { content: "พระ 3 ตัว", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "'นาฬิกา' มีกี่พยางค์?",
+            difficulty: "EASY",
+            explanation: "นา-ฬิ-กา = 3 พยางค์",
+            options: [
+              { content: "2 พยางค์", isCorrect: false, order: 1 },
+              { content: "3 พยางค์", isCorrect: true, order: 2 },
+              { content: "4 พยางค์", isCorrect: false, order: 3 },
+              { content: "1 พยางค์", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "ข้อใดเป็นคำสมาส?",
+            difficulty: "HARD",
+            explanation: "'ราชการ' = ราช + การ เป็นคำสมาส (คำบาลี/สันสกฤตประสมกัน)",
+            options: [
+              { content: "แม่น้ำ", isCorrect: false, order: 1 },
+              { content: "ราชการ", isCorrect: true, order: 2 },
+              { content: "พ่อบ้าน", isCorrect: false, order: 3 },
+              { content: "ลูกเสือ", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "คำราชาศัพท์ของ 'กิน' สำหรับพระมหากษัตริย์คือ?",
+            difficulty: "MEDIUM",
+            explanation: "คำราชาศัพท์ของ 'กิน' คือ 'เสวย'",
+            options: [
+              { content: "รับประทาน", isCorrect: false, order: 1 },
+              { content: "เสวย", isCorrect: true, order: 2 },
+              { content: "ฉัน", isCorrect: false, order: 3 },
+              { content: "ทาน", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "ข้อใดสะกดถูกต้อง?",
+            difficulty: "MEDIUM",
+            explanation: "'ลายเซ็น' สะกดด้วย เซ็น ไม่ใช่ 'เซ็นต์'",
+            options: [
+              { content: "ลายเซ็นต์", isCorrect: false, order: 1 },
+              { content: "ลายเซ็น", isCorrect: true, order: 2 },
+              { content: "ลายเชน", isCorrect: false, order: 3 },
+              { content: "ลายเซน", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "คำว่า 'บรรทัด' มีกี่พยางค์?",
+            difficulty: "EASY",
+            explanation: "บรรทัด แยกได้เป็น บัน-ทัด = 2 พยางค์",
+            options: [
+              { content: "1 พยางค์", isCorrect: false, order: 1 },
+              { content: "2 พยางค์", isCorrect: true, order: 2 },
+              { content: "3 พยางค์", isCorrect: false, order: 3 },
+              { content: "4 พยางค์", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "ข้อใดเขียนถูกต้อง?",
+            difficulty: "MEDIUM",
+            explanation: "'ปรากฏ' สะกดด้วย ฏ ปฏัก ไม่ใช่ 'ปรากฎ'",
+            options: [
+              { content: "ปรากฎ", isCorrect: false, order: 1 },
+              { content: "ปรากฏ", isCorrect: true, order: 2 },
+              { content: "ปรากด", isCorrect: false, order: 3 },
+              { content: "ปรากฏ", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "ข้อใดเขียนถูกต้อง?",
+            difficulty: "MEDIUM",
+            explanation: "'สังเกต' ไม่มี ุ ที่ ต ไม่ใช่ 'สังเกตุ'",
+            options: [
+              { content: "สังเกตุ", isCorrect: false, order: 1 },
+              { content: "สังเกต", isCorrect: true, order: 2 },
+              { content: "สังเกษ", isCorrect: false, order: 3 },
+              { content: "สังเกด", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "คำว่า 'กตัญญู' หมายถึงอะไร?",
+            difficulty: "EASY",
+            explanation: "กตัญญู หมายถึง การรู้คุณท่านผู้มีพระคุณ",
+            options: [
+              { content: "ความขยัน", isCorrect: false, order: 1 },
+              { content: "การรู้คุณผู้มีพระคุณ", isCorrect: true, order: 2 },
+              { content: "ความซื่อสัตย์", isCorrect: false, order: 3 },
+              { content: "ความกล้าหาญ", isCorrect: false, order: 4 },
             ],
           },
         ],
       },
       {
         name: "Reading Comprehension",
-        nameTh: "เธเธฒเธฃเธญเนเธฒเธเธเธฑเธเนเธเธเธงเธฒเธก",
+        nameTh: "การอ่านจับใจความ",
         slug: "thai-reading",
-        description: "เธ—เธ”เธชเธญเธเธเธงเธฒเธกเน€เธเนเธฒเนเธเนเธเธเธฒเธฃเธญเนเธฒเธเธเธ—เธเธงเธฒเธกเธ เธฒเธฉเธฒเนเธ—เธข",
+        description: "ทดสอบความเข้าใจในการอ่านบทความภาษาไทย",
         order: 2,
         questions: [
           {
-            content: "\"เธเธนเนเธเธณเธ—เธตเนเธ”เธตเธ•เนเธญเธเธเธฑเธเน€เธชเธตเธขเธเธเธญเธเธเธฃเธฐเธเธฒเธเธ เนเธกเนเนเธเนเนเธเนเธชเธฑเนเธเธเธฒเธฃ\" เธเนเธญเธเธงเธฒเธกเธเธตเนเน€เธเนเธเน€เธฃเธทเนเธญเธเนเธ”?",
-            difficulty: "MEDIUM",
-            explanation: "เธเนเธญเธเธงเธฒเธกเน€เธเนเธเธงเนเธฒเธเธนเนเธเธณเธ—เธตเนเธ”เธตเธเธงเธฃเธฃเธฑเธเธเธฑเธเนเธฅเธฐเธชเธทเนเธญเธชเธฒเธฃเธชเธญเธเธ—เธฒเธ เนเธกเนเนเธเนเนเธเนเธญเธญเธเธเธณเธชเธฑเนเธ",
-            options: [
-              { content: "เธเธงเธฒเธกเน€เธ”เนเธ”เธเธฒเธ”เธเธญเธเธเธนเนเธเธณ", isCorrect: false, order: 1 },
-              { content: "เธเธฒเธฃเธชเธทเนเธญเธชเธฒเธฃเนเธฅเธฐเธเธฒเธฃเธเธฑเธ", isCorrect: true, order: 2 },
-              { content: "เธญเธณเธเธฒเธเธเธญเธเธเธฃเธฐเธเธฒเธเธ", isCorrect: false, order: 3 },
-              { content: "เธเธเธฃเธฐเน€เธเธตเธขเธเนเธเธเธฒเธฃเธเธฃเธดเธซเธฒเธฃ", isCorrect: false, order: 4 },
-            ],
-          },
-          {
-            content: "เธเธณเธงเนเธฒ 'เนเธเธเธงเนเธฒเธ' เนเธเธชเธณเธเธงเธเนเธ—เธขเธซเธกเธฒเธขเธเธงเธฒเธกเธงเนเธฒเธญเธฐเนเธฃ?",
+            content: "\"การออมเงินเป็นนิสัยที่ดี ควรเริ่มตั้งแต่ยังเด็ก\" ใจความสำคัญคือ?",
             difficulty: "EASY",
-            explanation: "เนเธเธเธงเนเธฒเธ เธซเธกเธฒเธขเธ–เธถเธ เธกเธตเธเนเธณเนเธ เนเธซเนเธญเธ เธฑเธขเธเนเธฒเธข เนเธกเนเธเธฑเธเนเธเธ",
+            explanation: "ใจความสำคัญคือควรเริ่มออมเงินตั้งแต่เด็ก",
             options: [
-              { content: "เธกเธตเน€เธเธทเนเธญเธ—เธตเนเธเธงเนเธฒเธ", isCorrect: false, order: 1 },
-              { content: "เธกเธตเธเนเธณเนเธเน€เธญเธทเนเธญเน€เธเธทเนเธญ", isCorrect: true, order: 2 },
-              { content: "เธฃเธนเนเธชเธถเธเธ”เธตเนเธ", isCorrect: false, order: 3 },
-              { content: "เธเธฅเนเธฒเธซเธฒเธ", isCorrect: false, order: 4 },
+              { content: "เด็กไม่ควรมีเงิน", isCorrect: false, order: 1 },
+              { content: "ควรเริ่มออมเงินตั้งแต่เด็ก", isCorrect: true, order: 2 },
+              { content: "ผู้ใหญ่ออมเงินไม่ได้", isCorrect: false, order: 3 },
+              { content: "เงินไม่สำคัญ", isCorrect: false, order: 4 },
             ],
           },
           {
-            content: "เธชเธณเธเธงเธ 'เธเนเธณเธเธถเนเธเนเธซเนเธฃเธตเธเธ•เธฑเธ' เธซเธกเธฒเธขเธเธงเธฒเธกเธงเนเธฒเธญเธขเนเธฒเธเนเธฃ?",
+            content: "คำว่า 'ขยันขันแข็ง' จัดเป็นคำชนิดใด?",
             difficulty: "MEDIUM",
-            explanation: "เธซเธกเธฒเธขเธ–เธถเธ เน€เธกเธทเนเธญเธกเธตเนเธญเธเธฒเธชเธญเธฑเธเธ”เธตเธเธงเธฃเธฃเธตเธเนเธเนเธเธฃเธฐเนเธขเธเธเน เธญเธขเนเธฒเธเธฅเนเธญเธขเนเธซเนเนเธญเธเธฒเธชเธซเธฅเธธเธ”เธกเธทเธญ",
+            explanation: "เป็นคำซ้อนเพื่อความหมาย (ขยัน + ขันแข็ง ความหมายใกล้เคียงกัน)",
             options: [
-              { content: "เนเธซเนเธฃเธตเธเธ•เธฑเธเธเนเธณเนเธเธเธ“เธฐเธเนเธณเธเธถเนเธเธชเธนเธ", isCorrect: false, order: 1 },
-              { content: "เธเธงเธฃเธฃเธตเธเนเธเนเนเธญเธเธฒเธชเธ—เธตเนเธกเธตเธญเธขเธนเน", isCorrect: true, order: 2 },
-              { content: "เธญเธขเนเธฒเนเธเนเธ—เธฃเธฑเธเธขเธฒเธเธฃเธกเธฒเธเน€เธเธดเธเนเธ", isCorrect: false, order: 3 },
-              { content: "เนเธซเนเธฃเธฐเธงเธฑเธเธเนเธณเธ—เนเธงเธก", isCorrect: false, order: 4 },
+              { content: "คำซ้ำ", isCorrect: false, order: 1 },
+              { content: "คำซ้อน", isCorrect: true, order: 2 },
+              { content: "คำประสม", isCorrect: false, order: 3 },
+              { content: "คำสมาส", isCorrect: false, order: 4 },
             ],
           },
           {
-            content: "เธเนเธญเนเธ”เน€เธเนเธเธเธฒเธฃเนเธเนเธ เธฒเธฉเธฒเนเธเธฃเธฐเธ”เธฑเธเธ—เธฒเธเธเธฒเธฃ?",
+            content: "\"แม้ฝนจะตก เขาก็ยังไปทำงาน\" คำว่า 'แม้' แสดงความสัมพันธ์แบบใด?",
             difficulty: "MEDIUM",
-            explanation: "'เธเธญเน€เธฃเธตเธขเธเน€เธเธดเธเธ—เนเธฒเธเน€เธเนเธฒเธฃเนเธงเธกเธเธฃเธฐเธเธธเธก' เน€เธเนเธเธ เธฒเธฉเธฒเธ—เธฒเธเธเธฒเธฃเธ—เธตเนเนเธเนเนเธเธซเธเธฑเธเธชเธทเธญเธฃเธฒเธเธเธฒเธฃ",
+            explanation: "'แม้...ก็' แสดงความขัดแย้ง/ยอมให้ (ถึงแม้จะเกิดสิ่งหนึ่ง อีกสิ่งก็ยังเกิด)",
             options: [
-              { content: "เธกเธฒเธเธฃเธฐเธเธธเธกเธ”เนเธงเธขเธเธฐ", isCorrect: false, order: 1 },
-              { content: "เธเธญเน€เธเธดเธเธกเธฒเธเธฃเธฐเธเธธเธกเธเธฃเธฑเธ", isCorrect: false, order: 2 },
-              { content: "เธเธญเน€เธฃเธตเธขเธเน€เธเธดเธเธ—เนเธฒเธเน€เธเนเธฒเธฃเนเธงเธกเธเธฃเธฐเธเธธเธก", isCorrect: true, order: 3 },
-              { content: "เธเนเธงเธขเธกเธฒเธเธฃเธฐเธเธธเธกเธซเธเนเธญเธขเนเธ”เนเนเธซเธก", isCorrect: false, order: 4 },
+              { content: "เหตุและผล", isCorrect: false, order: 1 },
+              { content: "ความขัดแย้ง/ยอมให้", isCorrect: true, order: 2 },
+              { content: "เพิ่มเติม", isCorrect: false, order: 3 },
+              { content: "เปรียบเทียบ", isCorrect: false, order: 4 },
             ],
           },
           {
-            content: "เธเธณเนเธ”เธ•เนเธญเนเธเธเธตเนเน€เธเนเธเธเธณเธ—เธตเนเธกเธตเธเธงเธฒเธกเธซเธกเธฒเธขเนเธ”เธขเธเธฑเธข (connotation)?",
+            content: "ข้อใดเป็นประโยคความรวม?",
             difficulty: "HARD",
-            explanation: "'เธเธฅเธดเนเธเธญเธฒเธข' เน€เธเนเธเธเธณเธ—เธตเนเธกเธตเธเธงเธฒเธกเธซเธกเธฒเธขเน€เธเธดเธเธเธฑเธข เธซเธกเธฒเธขเธ–เธถเธเธเธงเธฒเธกเธฃเธนเนเธชเธถเธเธซเธฃเธทเธญเธเธฃเธฃเธขเธฒเธเธฒเธจเธ—เธตเนเธฃเธฑเธเธฃเธนเนเนเธ”เน เนเธกเนเนเธเนเธเธฅเธดเนเธเธเธฃเธดเธเน",
+            explanation: "ประโยคความรวมมีใจความตั้งแต่สองส่วนเชื่อมด้วยสันธาน เช่น 'ฉันอ่านหนังสือและน้องดูทีวี'",
             options: [
-              { content: "เธเนเธฒเธ", isCorrect: false, order: 1 },
-              { content: "เธเธฅเธดเนเธเธญเธฒเธข", isCorrect: true, order: 2 },
-              { content: "เนเธ•เนเธฐ", isCorrect: false, order: 3 },
-              { content: "เธซเธเธฑเธเธชเธทเธญ", isCorrect: false, order: 4 },
+              { content: "เด็กวิ่งเล่น", isCorrect: false, order: 1 },
+              { content: "ฉันอ่านหนังสือและน้องดูทีวี", isCorrect: true, order: 2 },
+              { content: "แมวสีดำ", isCorrect: false, order: 3 },
+              { content: "เขากิน", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "คำว่า 'อเนกประสงค์' หมายถึง?",
+            difficulty: "MEDIUM",
+            explanation: "อเนก = มาก, ประสงค์ = ความต้องการ จึงหมายถึงใช้ได้หลายอย่าง",
+            options: [
+              { content: "ใช้ได้อย่างเดียว", isCorrect: false, order: 1 },
+              { content: "ใช้ได้หลายอย่าง", isCorrect: true, order: 2 },
+              { content: "ใช้ไม่ได้", isCorrect: false, order: 3 },
+              { content: "ราคาแพง", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "\"เขาทำงานหนักเพื่อเก็บเงินส่งน้องเรียน\" ข้อความนี้แสดงถึงสิ่งใด?",
+            difficulty: "EASY",
+            explanation: "แสดงถึงความเสียสละและความรับผิดชอบต่อครอบครัว",
+            options: [
+              { content: "ความเกียจคร้าน", isCorrect: false, order: 1 },
+              { content: "ความเสียสละและรับผิดชอบ", isCorrect: true, order: 2 },
+              { content: "ความฟุ่มเฟือย", isCorrect: false, order: 3 },
+              { content: "ความเห็นแก่ตัว", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "คำว่า 'ปฏิสันถาร' หมายถึง?",
+            difficulty: "HARD",
+            explanation: "ปฏิสันถาร หมายถึง การต้อนรับด้วยความเป็นมิตร",
+            options: [
+              { content: "การต่อสู้", isCorrect: false, order: 1 },
+              { content: "การต้อนรับทักทาย", isCorrect: true, order: 2 },
+              { content: "การลงโทษ", isCorrect: false, order: 3 },
+              { content: "การปฏิเสธ", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "ข้อใดเป็นคำที่มีความหมายโดยนัย?",
+            difficulty: "HARD",
+            explanation: "'มือขวา' โดยนัยหมายถึงคนสนิทที่ไว้ใจได้ ไม่ใช่อวัยวะ",
+            options: [
+              { content: "โต๊ะ", isCorrect: false, order: 1 },
+              { content: "มือขวา (คนสนิท)", isCorrect: true, order: 2 },
+              { content: "ปากกา", isCorrect: false, order: 3 },
+              { content: "หนังสือ", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "คำว่า 'ทัศนคติ' หมายถึง?",
+            difficulty: "MEDIUM",
+            explanation: "ทัศนคติ หมายถึง ความคิดเห็นหรือมุมมองที่มีต่อสิ่งใดสิ่งหนึ่ง",
+            options: [
+              { content: "ความรู้สึกทางกาย", isCorrect: false, order: 1 },
+              { content: "ความคิดเห็น/มุมมอง", isCorrect: true, order: 2 },
+              { content: "ความสามารถ", isCorrect: false, order: 3 },
+              { content: "ความจำ", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "\"น้ำขึ้นให้รีบตัก\" ในบทความสื่อความหมายให้รีบทำสิ่งใด?",
+            difficulty: "MEDIUM",
+            explanation: "หมายถึงเมื่อมีโอกาสดีควรรีบใช้ประโยชน์ อย่าปล่อยให้โอกาสหลุดมือ",
+            options: [
+              { content: "รีบตักน้ำตอนน้ำขึ้น", isCorrect: false, order: 1 },
+              { content: "รีบใช้โอกาสที่มีอยู่", isCorrect: true, order: 2 },
+              { content: "อย่ารีบร้อน", isCorrect: false, order: 3 },
+              { content: "ให้รอเวลาที่เหมาะสม", isCorrect: false, order: 4 },
             ],
           },
         ],
       },
       {
         name: "Proverbs & Idioms",
-        nameTh: "เธชเธณเธเธงเธเนเธฅเธฐเธชเธธเธ เธฒเธฉเธดเธ•",
+        nameTh: "สำนวนและสุภาษิต",
         slug: "thai-proverbs",
-        description: "เธชเธณเธเธงเธเนเธฅเธฐเธชเธธเธ เธฒเธฉเธดเธ•เนเธ—เธขเธ—เธตเนเนเธเนเธเนเธญเธขเนเธเธเนเธญเธชเธญเธ",
+        description: "สำนวนและสุภาษิตไทยที่ใช้บ่อยในข้อสอบ",
         order: 3,
         questions: [
           {
-            content: "เธชเธธเธ เธฒเธฉเธดเธ• 'เนเธกเนเธญเนเธญเธเธ”เธฑเธ”เธเนเธฒเธข เนเธกเนเนเธเนเธ”เธฑเธ”เธขเธฒเธ' เธชเธทเนเธญเธเธงเธฒเธกเธซเธกเธฒเธขเธงเนเธฒเธญเธขเนเธฒเธเนเธฃ?",
+            content: "สุภาษิต 'น้ำขึ้นให้รีบตัก' สื่อความหมายว่าอย่างไร?",
             difficulty: "MEDIUM",
-            explanation: "เธซเธกเธฒเธขเธ–เธถเธ เธเธฒเธฃเธญเธเธฃเธกเธชเธฑเนเธเธชเธญเธเธเธงเธฃเธ—เธณเธ•เธฑเนเธเนเธ•เนเธขเธฑเธเน€เธ”เนเธ เน€เธเธฃเธฒเธฐเน€เธกเธทเนเธญเนเธ•เนเธฅเนเธงเธเธฐเน€เธเธฅเธตเนเธขเธเธเธดเธชเธฑเธขเนเธ”เนเธขเธฒเธ",
+            explanation: "มีโอกาสควรรีบทำ อย่าปล่อยให้โอกาสผ่านไป",
             options: [
-              { content: "เธ•เนเธเนเธกเนเธญเนเธญเธเธขเธทเธ”เธซเธขเธธเนเธเธเธงเนเธฒเธ•เนเธเนเธกเนเนเธเน", isCorrect: false, order: 1 },
-              { content: "เธเธงเธฃเธญเธเธฃเธกเธชเธฑเนเธเธชเธญเธเน€เธ”เนเธเธ•เธฑเนเธเนเธ•เนเน€เธฅเนเธ", isCorrect: true, order: 2 },
-              { content: "เธเธเนเธเนเธกเธตเธเธฃเธฐเธชเธเธเธฒเธฃเธ“เนเธกเธฒเธเธเธงเนเธฒเน€เธ”เนเธ", isCorrect: false, order: 3 },
-              { content: "เธเธฒเธฃเธเธญเธเนเธกเนเธ•เนเธญเธเธฃเธฐเธกเธฑเธ”เธฃเธฐเธงเธฑเธ", isCorrect: false, order: 4 },
+              { content: "รีบตักน้ำก่อนหมด", isCorrect: false, order: 1 },
+              { content: "มีโอกาสควรรีบทำ", isCorrect: true, order: 2 },
+              { content: "ทำงานตอนน้ำขึ้น", isCorrect: false, order: 3 },
+              { content: "อย่ารีบร้อน", isCorrect: false, order: 4 },
             ],
           },
           {
-            content: "เธชเธณเธเธงเธ 'เธเธฑเธเนเธกเนเธเนเธณเธ—เธฑเนเธเธซเนเธฒ' เธซเธกเธฒเธขเธ–เธถเธเธญเธฐเนเธฃ?",
+            content: "สำนวน 'ขี่ช้างจับตั๊กแตน' หมายถึงอะไร?",
             difficulty: "MEDIUM",
-            explanation: "เธซเธกเธฒเธขเธ–เธถเธ เธเธนเธ”เธซเธงเนเธฒเธเธฅเนเธญเธกเธญเนเธฒเธเน€เธซเธ•เธธเธเธฅเธ•เนเธฒเธเน เธเธฒเธเธฒ เน€เธเธทเนเธญเธเธฑเธเธเธนเธเนเธซเนเน€เธเธทเนเธญเธซเธฃเธทเธญเธขเธดเธเธขเธญเธก",
+            explanation: "ลงทุนมากแต่ได้ผลเล็กน้อย ไม่คุ้มค่า",
             options: [
-              { content: "เธเธนเธ”เธ–เธถเธเนเธกเนเธเนเธณเธ•เนเธฒเธเน", isCorrect: false, order: 1 },
-              { content: "เธเธนเธ”เธซเธงเนเธฒเธเธฅเนเธญเธกเธ”เนเธงเธขเน€เธซเธ•เธธเธเธฅเธ•เนเธฒเธเน", isCorrect: true, order: 2 },
-              { content: "เธเธงเธเนเธเน€เธ—เธตเนเธขเธงเนเธกเนเธเนเธณ", isCorrect: false, order: 3 },
-              { content: "เธเธนเธ”เนเธเธซเธ", isCorrect: false, order: 4 },
+              { content: "ทำงานยากลำบาก", isCorrect: false, order: 1 },
+              { content: "ลงทุนมากแต่ได้ผลน้อย", isCorrect: true, order: 2 },
+              { content: "ทำงานเก่ง", isCorrect: false, order: 3 },
+              { content: "ใช้ของใหญ่", isCorrect: false, order: 4 },
             ],
           },
           {
-            content: "เธชเธธเธ เธฒเธฉเธดเธ•เนเธ”เธกเธตเธเธงเธฒเธกเธซเธกเธฒเธขเธงเนเธฒ 'เธญเธขเนเธฒเธ”เธนเธ–เธนเธเธเธเธญเธทเนเธเน€เธเธฃเธฒเธฐเธชเธฑเธเธงเธฑเธเน€เธเธฒเธญเธฒเธเน€เธเนเธเธเธงเนเธฒเน€เธฃเธฒ'?",
+            content: "สุภาษิต 'กว่าถั่วจะสุกงาก็ไหม้' หมายถึง?",
             difficulty: "MEDIUM",
-            explanation: "'เธญเธขเนเธฒเธ”เธนเธ–เธนเธเธเนเธณเธเนเธญเธข' เธซเธฃเธทเธญเนเธเธฅเนเน€เธเธตเธขเธเธ—เธตเนเธชเธธเธ”เธเธทเธญ 'เธญเธขเนเธฒเธ•เธตเธเธนเนเธซเนเธซเธฑเธงเธซเธฒเธ' เธซเธกเธฒเธขเธ–เธถเธเธญเธขเนเธฒเธ”เธนเธ–เธนเธเธเธนเนเธกเธตเธเธงเธฒเธกเธชเธฒเธกเธฒเธฃเธ– เนเธ•เนเธ–เนเธฒเน€เธฅเธทเธญเธเธ—เธตเนเนเธเธฅเนเน€เธเธตเธขเธเธ—เธตเนเธชเธธเธ” เธเธทเธญ เธญเธขเนเธฒเธ”เธนเธ–เธนเธเธเธเนเธ”เธขเธฃเธนเธเธฅเธฑเธเธฉเธ“เน",
+            explanation: "ทำอะไรช้าเกินไปจนเสียประโยชน์ทั้งสองอย่าง",
             options: [
-              { content: "เธกเธทเธญเธ–เธทเธญเธชเธฒเธ เธเธฒเธเธ–เธทเธญเธจเธตเธฅ", isCorrect: false, order: 1 },
-              { content: "เธญเธขเนเธฒเธ”เธนเธเนเธฒเธเนเธ•เนเธซเธฒเธเน€เธ”เธตเธขเธง", isCorrect: true, order: 2 },
-              { content: "เธเนเธฒเธงเนเธซเธกเนเธเธฅเธฒเธกเธฑเธ", isCorrect: false, order: 3 },
-              { content: "เธเธเน€เธเธงเธตเธขเธเธเธณเน€เธเธงเธตเธขเธ", isCorrect: false, order: 4 },
+              { content: "ทำอาหารไม่เป็น", isCorrect: false, order: 1 },
+              { content: "ทำอะไรช้าจนเสียประโยชน์ทั้งสองทาง", isCorrect: true, order: 2 },
+              { content: "รีบร้อนเกินไป", isCorrect: false, order: 3 },
+              { content: "ทำงานเก่ง", isCorrect: false, order: 4 },
             ],
           },
           {
-            content: "เธชเธณเธเธงเธ 'เน€เธชเธทเธญเธเธญเธเธเธดเธ' เธซเธกเธฒเธขเธ–เธถเธเธญเธฐเนเธฃ?",
-            difficulty: "MEDIUM",
-            explanation: "เธซเธกเธฒเธขเธ–เธถเธ เธเธฒเธฃเนเธ”เนเธฃเธฑเธเธเธฅเธเธฃเธฐเนเธขเธเธเนเนเธ”เธขเนเธกเนเธ•เนเธญเธเธ—เธณเธเธฒเธ เธซเธฃเธทเธญ เธกเธตเธฃเธฒเธขเนเธ”เนเนเธ”เธขเนเธกเนเธ•เนเธญเธเธญเธญเธเนเธฃเธ",
+            content: "สำนวน 'ชักน้ำเข้าลึก ชักศึกเข้าบ้าน' หมายถึง?",
+            difficulty: "HARD",
+            explanation: "นำความเดือดร้อนหรือภัยมาสู่ตนเองหรือพวกพ้อง",
             options: [
-              { content: "เน€เธชเธทเธญเธ—เธตเนเธเธตเนเน€เธเธตเธขเธ", isCorrect: false, order: 1 },
-              { content: "เนเธ”เนเธฃเธฑเธเธเธฅเธเธฃเธฐเนเธขเธเธเนเนเธ”เธขเนเธกเนเธ•เนเธญเธเธ—เธณเธเธฒเธ", isCorrect: true, order: 2 },
-              { content: "เธเธเธ—เธตเนเธเธญเธเธซเธฅเธฑเธเธ•เธฅเธญเธ”เน€เธงเธฅเธฒ", isCorrect: false, order: 3 },
-              { content: "เธเธเธ—เธตเนเธฃเนเธณเธฃเธงเธขเธกเธฒเธ", isCorrect: false, order: 4 },
+              { content: "นำภัยมาสู่ตนเอง", isCorrect: true, order: 1 },
+              { content: "ทำนา", isCorrect: false, order: 2 },
+              { content: "ป้องกันบ้าน", isCorrect: false, order: 3 },
+              { content: "ทำสงคราม", isCorrect: false, order: 4 },
             ],
           },
           {
-            content: "'เธเธเน€เธเธงเธตเธขเธเธเธณเน€เธเธงเธตเธขเธ' เธซเธกเธฒเธขเธเธงเธฒเธกเธงเนเธฒเธญเธขเนเธฒเธเนเธฃ?",
+            content: "สุภาษิต 'รักวัวให้ผูก รักลูกให้ตี' หมายถึง?",
             difficulty: "MEDIUM",
-            explanation: "เธซเธกเธฒเธขเธ–เธถเธ เธเธฃเธฃเธกเธ—เธตเนเน€เธเธขเธ—เธณเนเธงเนเธขเนเธญเธกเธชเนเธเธเธฅเธเธฅเธฑเธเธกเธฒเธซเธฒเธ•เธฑเธง เธซเธฃเธทเธญ เน€เธงเธฃเธเธฃเธฃเธกเธกเธตเธเธฃเธดเธ",
+            explanation: "การอบรมสั่งสอนบุตรหลานต้องเข้มงวดบ้างจึงจะดี",
             options: [
-              { content: "เธงเธเธฅเนเธญเธซเธกเธธเธเน€เธงเธตเธขเธ", isCorrect: false, order: 1 },
-              { content: "เธเธฃเธฃเธกเธ•เธฒเธกเธชเธเธญเธ", isCorrect: true, order: 2 },
-              { content: "เธเธงเธฒเธกเธขเธธเธ•เธดเธเธฃเธฃเธก", isCorrect: false, order: 3 },
-              { content: "เนเธเธเธเธฐเธ•เธฒ", isCorrect: false, order: 4 },
+              { content: "ต้องเลี้ยงวัว", isCorrect: false, order: 1 },
+              { content: "การอบรมลูกต้องเข้มงวดบ้าง", isCorrect: true, order: 2 },
+              { content: "ห้ามตีลูก", isCorrect: false, order: 3 },
+              { content: "ผูกวัวไว้", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "สำนวน 'ปิดทองหลังพระ' หมายถึง?",
+            difficulty: "MEDIUM",
+            explanation: "การทำความดีโดยไม่หวังให้ผู้อื่นเห็นหรือยกย่อง",
+            options: [
+              { content: "ทำดีโดยไม่หวังคำชม", isCorrect: true, order: 1 },
+              { content: "ปิดทองที่พระ", isCorrect: false, order: 2 },
+              { content: "ทำงานลับ ๆ", isCorrect: false, order: 3 },
+              { content: "หลบหนีความผิด", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "สำนวน 'วัวหายล้อมคอก' หมายถึง?",
+            difficulty: "MEDIUM",
+            explanation: "เมื่อเกิดความเสียหายแล้วจึงคิดป้องกัน",
+            options: [
+              { content: "เลี้ยงวัวในคอก", isCorrect: false, order: 1 },
+              { content: "เกิดเรื่องแล้วจึงป้องกัน", isCorrect: true, order: 2 },
+              { content: "ป้องกันก่อนเกิดเหตุ", isCorrect: false, order: 3 },
+              { content: "ตามหาวัว", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "สำนวน 'น้ำร้อนปลาเป็น น้ำเย็นปลาตาย' หมายถึง?",
+            difficulty: "HARD",
+            explanation: "คำพูดที่ตรงไปตรงมาแม้ฟังดูแรงอาจมีประโยชน์ ส่วนคำพูดอ่อนหวานอาจเป็นโทษ",
+            options: [
+              { content: "เลี้ยงปลาในน้ำร้อน", isCorrect: false, order: 1 },
+              { content: "คำพูดตรงไปตรงมาอาจมีประโยชน์", isCorrect: true, order: 2 },
+              { content: "อุณหภูมิน้ำสำคัญ", isCorrect: false, order: 3 },
+              { content: "ปลาชอบน้ำเย็น", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "สำนวน 'เข้าเมืองตาหลิ่ว ต้องหลิ่วตาตาม' หมายถึง?",
+            difficulty: "MEDIUM",
+            explanation: "ควรประพฤติตามธรรมเนียมของสถานที่ที่เราไปอยู่",
+            options: [
+              { content: "ต้องหลิ่วตา", isCorrect: false, order: 1 },
+              { content: "ทำตัวให้เข้ากับท้องถิ่น", isCorrect: true, order: 2 },
+              { content: "เดินทางบ่อย ๆ", isCorrect: false, order: 3 },
+              { content: "อยู่บ้านดีกว่า", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "สำนวน 'ตำน้ำพริกละลายแม่น้ำ' หมายถึง?",
+            difficulty: "MEDIUM",
+            explanation: "ลงทุนหรือใช้จ่ายไปโดยเปล่าประโยชน์ ไม่ได้ผลคุ้มค่า",
+            options: [
+              { content: "ทำอาหารจำนวนมาก", isCorrect: false, order: 1 },
+              { content: "ใช้จ่ายเปล่าประโยชน์", isCorrect: true, order: 2 },
+              { content: "ทำงานหนัก", isCorrect: false, order: 3 },
+              { content: "ประหยัดเงิน", isCorrect: false, order: 4 },
             ],
           },
         ],
@@ -412,24 +867,24 @@ const subjects = [
   },
   {
     name: "English Language",
-    nameTh: "เธ เธฒเธฉเธฒเธญเธฑเธเธเธคเธฉ",
+    nameTh: "ภาษาอังกฤษ",
     slug: "english",
-    description: "เธ—เธ”เธชเธญเธเธ—เธฑเธเธฉเธฐเธ เธฒเธฉเธฒเธญเธฑเธเธเธคเธฉ เนเธงเธขเธฒเธเธฃเธ“เน เนเธฅเธฐเธเธฒเธฃเธญเนเธฒเธ",
-    icon: "๐ฌ๐ง",
+    description: "ทดสอบทักษะภาษาอังกฤษ ไวยากรณ์ และการอ่าน",
+    icon: "🔤",
     color: "#8B5CF6",
     order: 3,
     topics: [
       {
         name: "Grammar & Vocabulary",
-        nameTh: "เนเธงเธขเธฒเธเธฃเธ“เนเนเธฅเธฐเธเธณเธจเธฑเธเธ—เน",
+        nameTh: "ไวยากรณ์และคำศัพท์",
         slug: "english-grammar",
-        description: "เนเธงเธขเธฒเธเธฃเธ“เนเธ เธฒเธฉเธฒเธญเธฑเธเธเธคเธฉเนเธฅเธฐเธเธณเธจเธฑเธเธ—เนเธ—เธตเนเนเธเนเธเนเธญเธข",
+        description: "ไวยากรณ์ภาษาอังกฤษและคำศัพท์ที่ใช้บ่อย",
         order: 1,
         questions: [
           {
             content: "Choose the correct sentence:",
             difficulty: "MEDIUM",
-            explanation: "'She has worked here for five years' เนเธเน Present Perfect เน€เธเธฃเธฒเธฐเน€เธเนเธเธชเธดเนเธเธ—เธตเนเธขเธฑเธเธ—เธณเธญเธขเธนเนเธ–เธถเธเธเธฑเธเธเธธเธเธฑเธ",
+            explanation: "'She has worked here for five years' เป็น Present Perfect เพราะเป็นสิ่งที่ยังทำอยู่ถึงปัจจุบัน",
             options: [
               { content: "She work here for five years.", isCorrect: false, order: 1 },
               { content: "She has worked here for five years.", isCorrect: true, order: 2 },
@@ -440,7 +895,7 @@ const subjects = [
           {
             content: "The word 'benevolent' is closest in meaning to:",
             difficulty: "MEDIUM",
-            explanation: "'Benevolent' เธซเธกเธฒเธขเธ–เธถเธ เธกเธตเธเธงเธฒเธกเน€เธกเธ•เธ•เธฒ เธกเธตเนเธเธเธธเธจเธฅ เธเธถเนเธเธ•เธฃเธเธเธฑเธ 'kind and generous'",
+            explanation: "'Benevolent' หมายถึง มีความเมตตา ใจดี ตรงกับ 'kind and generous'",
             options: [
               { content: "strict and demanding", isCorrect: false, order: 1 },
               { content: "kind and generous", isCorrect: true, order: 2 },
@@ -451,7 +906,7 @@ const subjects = [
           {
             content: "Fill in the blank: If I _____ rich, I would travel the world.",
             difficulty: "MEDIUM",
-            explanation: "Second Conditional เนเธเน were/was + would + V1: 'If I were rich, I would travel'",
+            explanation: "Second Conditional ใช้ were + would + V1: 'If I were rich, I would travel'",
             options: [
               { content: "am", isCorrect: false, order: 1 },
               { content: "will be", isCorrect: false, order: 2 },
@@ -473,7 +928,7 @@ const subjects = [
           {
             content: "Which word is a synonym of 'diligent'?",
             difficulty: "EASY",
-            explanation: "'Diligent' เธซเธกเธฒเธขเธ–เธถเธ เธเธขเธฑเธเธซเธกเธฑเนเธเน€เธเธตเธขเธฃ เธเธถเนเธเธ•เธฃเธเธเธฑเธ 'hardworking'",
+            explanation: "'Diligent' หมายถึง ขยันหมั่นเพียร ตรงกับ 'hardworking'",
             options: [
               { content: "lazy", isCorrect: false, order: 1 },
               { content: "hardworking", isCorrect: true, order: 2 },
@@ -481,19 +936,96 @@ const subjects = [
               { content: "reckless", isCorrect: false, order: 4 },
             ],
           },
+          {
+            content: "Choose the correct form: He _____ to school every day.",
+            difficulty: "EASY",
+            explanation: "Present Simple กับ He ต้องเติม s: goes",
+            options: [
+              { content: "go", isCorrect: false, order: 1 },
+              { content: "goes", isCorrect: true, order: 2 },
+              { content: "going", isCorrect: false, order: 3 },
+              { content: "gone", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "Choose the antonym of 'generous':",
+            difficulty: "MEDIUM",
+            explanation: "'Generous' (ใจกว้าง) ตรงข้ามกับ 'stingy' (ขี้เหนียว)",
+            options: [
+              { content: "kind", isCorrect: false, order: 1 },
+              { content: "stingy", isCorrect: true, order: 2 },
+              { content: "friendly", isCorrect: false, order: 3 },
+              { content: "warm", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "They have lived here _____ 2010.",
+            difficulty: "MEDIUM",
+            explanation: "'since' ใช้กับจุดเวลา (2010), 'for' ใช้กับช่วงเวลา",
+            options: [
+              { content: "for", isCorrect: false, order: 1 },
+              { content: "since", isCorrect: true, order: 2 },
+              { content: "from", isCorrect: false, order: 3 },
+              { content: "at", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "This box is _____ than that one.",
+            difficulty: "EASY",
+            explanation: "Comparative ของ heavy = heavier (เปลี่ยน y เป็น i + er)",
+            options: [
+              { content: "heavy", isCorrect: false, order: 1 },
+              { content: "heavier", isCorrect: true, order: 2 },
+              { content: "heaviest", isCorrect: false, order: 3 },
+              { content: "more heavy", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "The word 'abundant' means:",
+            difficulty: "MEDIUM",
+            explanation: "'Abundant' หมายถึง มีมาก อุดมสมบูรณ์ = plentiful",
+            options: [
+              { content: "scarce", isCorrect: false, order: 1 },
+              { content: "plentiful", isCorrect: true, order: 2 },
+              { content: "empty", isCorrect: false, order: 3 },
+              { content: "rare", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "I saw _____ elephant at the zoo.",
+            difficulty: "EASY",
+            explanation: "ใช้ 'an' หน้าคำที่ขึ้นต้นด้วยเสียงสระ (elephant)",
+            options: [
+              { content: "a", isCorrect: false, order: 1 },
+              { content: "an", isCorrect: true, order: 2 },
+              { content: "the", isCorrect: false, order: 3 },
+              { content: "no article", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "Neither John nor his friends _____ coming.",
+            difficulty: "HARD",
+            explanation: "Neither...nor ใช้กริยาตามประธานที่อยู่ใกล้ที่สุด (friends = are)",
+            options: [
+              { content: "is", isCorrect: false, order: 1 },
+              { content: "are", isCorrect: true, order: 2 },
+              { content: "was", isCorrect: false, order: 3 },
+              { content: "am", isCorrect: false, order: 4 },
+            ],
+          },
         ],
       },
       {
         name: "Reading Comprehension",
-        nameTh: "เธเธฒเธฃเธญเนเธฒเธเธ เธฒเธฉเธฒเธญเธฑเธเธเธคเธฉ",
+        nameTh: "การอ่านภาษาอังกฤษ",
         slug: "english-reading",
-        description: "เธเธถเธเธญเนเธฒเธเธเธ—เธเธงเธฒเธกเธ เธฒเธฉเธฒเธญเธฑเธเธเธคเธฉเนเธฅเธฐเธ•เธญเธเธเธณเธ–เธฒเธก",
+        description: "ฝึกอ่านบทความภาษาอังกฤษและตอบคำถาม",
         order: 2,
         questions: [
           {
-            content: "Read the passage: 'Climate change is one of the most pressing issues of our time. It affects weather patterns, sea levels, and biodiversity worldwide.' What is the main topic of this passage?",
+            content: "Read: 'Climate change affects weather patterns, sea levels, and biodiversity worldwide.' What is the main topic?",
             difficulty: "EASY",
-            explanation: "เธเธ—เธเธงเธฒเธกเธเธนเธ”เธ–เธถเธ Climate change เนเธฅเธฐเธเธฅเธเธฃเธฐเธ—เธ เธ”เธฑเธเธเธฑเนเธ main topic เธเธทเธญ climate change and its effects",
+            explanation: "บทความพูดถึง Climate change และผลกระทบ ดังนั้น main topic คือ climate change and its impacts",
             options: [
               { content: "Weather forecasting", isCorrect: false, order: 1 },
               { content: "Climate change and its impacts", isCorrect: true, order: 2 },
@@ -502,9 +1034,9 @@ const subjects = [
             ],
           },
           {
-            content: "The word 'pressing' in the sentence 'one of the most pressing issues' means:",
+            content: "The word 'pressing' in 'one of the most pressing issues' means:",
             difficulty: "MEDIUM",
-            explanation: "'Pressing' เนเธเธเธฃเธดเธเธ—เธเธตเนเธซเธกเธฒเธขเธ–เธถเธ urgent/important เนเธกเนเนเธเนเธเธฒเธฃเธเธ”",
+            explanation: "'Pressing' ในบริบทนี้หมายถึง urgent/important ไม่ใช่การกด",
             options: [
               { content: "pushing physically", isCorrect: false, order: 1 },
               { content: "urgent and important", isCorrect: true, order: 2 },
@@ -515,7 +1047,7 @@ const subjects = [
           {
             content: "Choose the sentence with correct punctuation:",
             difficulty: "MEDIUM",
-            explanation: "เธเธฃเธฐเนเธขเธเธ—เธตเนเธ–เธนเธเธ•เนเธญเธเธ•เนเธญเธเธกเธต comma เธซเธฅเธฑเธ introductory clause เนเธฅเธฐเนเธชเน period เธ—เนเธฒเธขเธเธฃเธฐเนเธขเธ",
+            explanation: "ประโยคที่ถูกต้องมี comma หลัง introductory word (However)",
             options: [
               { content: "However he decided to stay.", isCorrect: false, order: 1 },
               { content: "However, he decided to stay.", isCorrect: true, order: 2 },
@@ -526,7 +1058,7 @@ const subjects = [
           {
             content: "What does 'FAQ' stand for?",
             difficulty: "EASY",
-            explanation: "FAQ = Frequently Asked Questions = เธเธณเธ–เธฒเธกเธ—เธตเนเธเธเธเนเธญเธข",
+            explanation: "FAQ = Frequently Asked Questions = คำถามที่พบบ่อย",
             options: [
               { content: "Fast Answer Questions", isCorrect: false, order: 1 },
               { content: "Frequently Asked Questions", isCorrect: true, order: 2 },
@@ -537,12 +1069,67 @@ const subjects = [
           {
             content: "Choose the correct preposition: She is interested _____ learning Thai.",
             difficulty: "EASY",
-            explanation: "'Interested in' เน€เธเนเธ collocation เธ—เธตเนเธ–เธนเธเธ•เนเธญเธ",
+            explanation: "'Interested in' เป็น collocation ที่ถูกต้อง",
             options: [
               { content: "at", isCorrect: false, order: 1 },
               { content: "on", isCorrect: false, order: 2 },
               { content: "in", isCorrect: true, order: 3 },
               { content: "for", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "The cat is hiding _____ the table.",
+            difficulty: "EASY",
+            explanation: "'under' หมายถึง ใต้ ใช้เมื่ออยู่ข้างใต้โต๊ะ",
+            options: [
+              { content: "on", isCorrect: false, order: 1 },
+              { content: "under", isCorrect: true, order: 2 },
+              { content: "at", isCorrect: false, order: 3 },
+              { content: "of", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "'Reduce, Reuse, Recycle' relates mainly to:",
+            difficulty: "EASY",
+            explanation: "เป็นหลัก 3R เกี่ยวกับการจัดการขยะและสิ่งแวดล้อม",
+            options: [
+              { content: "Cooking", isCorrect: false, order: 1 },
+              { content: "Environment / waste management", isCorrect: true, order: 2 },
+              { content: "Banking", isCorrect: false, order: 3 },
+              { content: "Sports", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "What does 'ASAP' stand for?",
+            difficulty: "EASY",
+            explanation: "ASAP = As Soon As Possible (โดยเร็วที่สุด)",
+            options: [
+              { content: "As Slow As Possible", isCorrect: false, order: 1 },
+              { content: "As Soon As Possible", isCorrect: true, order: 2 },
+              { content: "Always Stay At Place", isCorrect: false, order: 3 },
+              { content: "After Sales And Profit", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "Choose the synonym of 'tired':",
+            difficulty: "EASY",
+            explanation: "'Exhausted' หมายถึงเหนื่อยมาก ตรงกับ tired",
+            options: [
+              { content: "energetic", isCorrect: false, order: 1 },
+              { content: "exhausted", isCorrect: true, order: 2 },
+              { content: "happy", isCorrect: false, order: 3 },
+              { content: "fresh", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "Complete the dialogue: 'How are you?' '_____'",
+            difficulty: "EASY",
+            explanation: "คำตอบทักทายที่เหมาะสมคือ 'I'm fine, thank you.'",
+            options: [
+              { content: "I am a teacher.", isCorrect: false, order: 1 },
+              { content: "I'm fine, thank you.", isCorrect: true, order: 2 },
+              { content: "It is Monday.", isCorrect: false, order: 3 },
+              { content: "Yes, I do.", isCorrect: false, order: 4 },
             ],
           },
         ],
@@ -551,137 +1138,225 @@ const subjects = [
   },
   {
     name: "Civil Service Regulations",
-    nameTh: "เธฃเธฐเน€เธเธตเธขเธเธฃเธฒเธเธเธฒเธฃ",
+    nameTh: "ระเบียบราชการ",
     slug: "civil-service",
-    description: "เธเธเธซเธกเธฒเธขเนเธฅเธฐเธฃเธฐเน€เธเธตเธขเธเธ—เธตเนเน€เธเธตเนเธขเธงเธเนเธญเธเธเธฑเธเธเนเธฒเธฃเธฒเธเธเธฒเธฃ",
-    icon: "โ–๏ธ",
+    description: "กฎหมายและระเบียบที่เกี่ยวข้องกับข้าราชการ",
+    icon: "⚖️",
     color: "#F59E0B",
     order: 4,
     topics: [
       {
         name: "Civil Service Act",
-        nameTh: "เธเธฃเธ. เธฃเธฐเน€เธเธตเธขเธเธเนเธฒเธฃเธฒเธเธเธฒเธฃเธเธฅเน€เธฃเธทเธญเธ",
+        nameTh: "พรบ. ระเบียบข้าราชการพลเรือน",
         slug: "civil-service-act",
-        description: "เธเธฃเธฐเธฃเธฒเธเธเธฑเธเธเธฑเธ•เธดเธฃเธฐเน€เธเธตเธขเธเธเนเธฒเธฃเธฒเธเธเธฒเธฃเธเธฅเน€เธฃเธทเธญเธ เธ.เธจ. 2551",
+        description: "พระราชบัญญัติระเบียบข้าราชการพลเรือน พ.ศ. 2551",
         order: 1,
         questions: [
           {
-            content: "เธเธฃเธฐเธฃเธฒเธเธเธฑเธเธเธฑเธ•เธดเธฃเธฐเน€เธเธตเธขเธเธเนเธฒเธฃเธฒเธเธเธฒเธฃเธเธฅเน€เธฃเธทเธญเธ เธเธเธฑเธเธเธฑเธเธเธธเธเธฑเธ เธเธทเธญ เธ.เธจ. เนเธ”?",
+            content: "พระราชบัญญัติระเบียบข้าราชการพลเรือนฉบับปัจจุบัน คือ พ.ศ. ใด?",
             difficulty: "MEDIUM",
-            explanation: "เธเธฃเธ. เธฃเธฐเน€เธเธตเธขเธเธเนเธฒเธฃเธฒเธเธเธฒเธฃเธเธฅเน€เธฃเธทเธญเธ เธเธเธฑเธเธเธฑเธเธเธธเธเธฑเธเธเธทเธญ เธ.เธจ. 2551 เธเธถเนเธเธเธฃเธฐเธเธฒเธจเนเธเนเนเธ—เธเธเธเธฑเธ เธ.เธจ. 2535",
+            explanation: "พรบ. ระเบียบข้าราชการพลเรือนฉบับปัจจุบันคือ พ.ศ. 2551",
             options: [
-              { content: "เธ.เธจ. 2535", isCorrect: false, order: 1 },
-              { content: "เธ.เธจ. 2545", isCorrect: false, order: 2 },
-              { content: "เธ.เธจ. 2551", isCorrect: true, order: 3 },
-              { content: "เธ.เธจ. 2560", isCorrect: false, order: 4 },
+              { content: "พ.ศ. 2535", isCorrect: false, order: 1 },
+              { content: "พ.ศ. 2545", isCorrect: false, order: 2 },
+              { content: "พ.ศ. 2551", isCorrect: true, order: 3 },
+              { content: "พ.ศ. 2560", isCorrect: false, order: 4 },
             ],
           },
           {
-            content: "เธเนเธฒเธฃเธฒเธเธเธฒเธฃเธเธฅเน€เธฃเธทเธญเธเธชเธฒเธกเธฑเธเนเธเนเธเธญเธญเธเน€เธเนเธเธเธตเนเธเธฃเธฐเน€เธ เธ—?",
+            content: "ข้าราชการพลเรือนสามัญแบ่งออกเป็นกี่ประเภท?",
             difficulty: "MEDIUM",
-            explanation: "เธ•เธฒเธก เธเธฃเธ. 2551 เธเนเธฒเธฃเธฒเธเธเธฒเธฃเธเธฅเน€เธฃเธทเธญเธเธชเธฒเธกเธฑเธเนเธเนเธเน€เธเนเธ 4 เธเธฃเธฐเน€เธ เธ—: เธ—เธฑเนเธงเนเธ เธงเธดเธเธฒเธเธฒเธฃ เธญเธณเธเธงเธขเธเธฒเธฃ เนเธฅเธฐเธเธฃเธดเธซเธฒเธฃ",
+            explanation: "ตาม พรบ. 2551 แบ่งเป็น 4 ประเภท: บริหาร อำนวยการ วิชาการ และทั่วไป",
             options: [
-              { content: "2 เธเธฃเธฐเน€เธ เธ—", isCorrect: false, order: 1 },
-              { content: "3 เธเธฃเธฐเน€เธ เธ—", isCorrect: false, order: 2 },
-              { content: "4 เธเธฃเธฐเน€เธ เธ—", isCorrect: true, order: 3 },
-              { content: "5 เธเธฃเธฐเน€เธ เธ—", isCorrect: false, order: 4 },
+              { content: "2 ประเภท", isCorrect: false, order: 1 },
+              { content: "3 ประเภท", isCorrect: false, order: 2 },
+              { content: "4 ประเภท", isCorrect: true, order: 3 },
+              { content: "5 ประเภท", isCorrect: false, order: 4 },
             ],
           },
           {
-            content: "เธญเธฒเธขเธธเธเธฑเนเธเธ•เนเธณเนเธเธเธฒเธฃเธชเธกเธฑเธเธฃเธชเธญเธเธเนเธฒเธฃเธฒเธเธเธฒเธฃเธเธฅเน€เธฃเธทเธญเธเธเธทเธญเธเธตเนเธเธต?",
+            content: "อายุขั้นต่ำในการสมัครสอบเข้าเป็นข้าราชการพลเรือนคือกี่ปี?",
             difficulty: "EASY",
-            explanation: "เธเธนเนเธชเธกเธฑเธเธฃเธชเธญเธเธเนเธฒเธฃเธฒเธเธเธฒเธฃเธ•เนเธญเธเธกเธตเธญเธฒเธขเธธเนเธกเนเธ•เนเธณเธเธงเนเธฒ 18 เธเธต",
+            explanation: "ผู้สมัครสอบข้าราชการต้องมีอายุไม่ต่ำกว่า 18 ปี",
             options: [
-              { content: "15 เธเธต", isCorrect: false, order: 1 },
-              { content: "18 เธเธต", isCorrect: true, order: 2 },
-              { content: "20 เธเธต", isCorrect: false, order: 3 },
-              { content: "25 เธเธต", isCorrect: false, order: 4 },
+              { content: "15 ปี", isCorrect: false, order: 1 },
+              { content: "18 ปี", isCorrect: true, order: 2 },
+              { content: "20 ปี", isCorrect: false, order: 3 },
+              { content: "25 ปี", isCorrect: false, order: 4 },
             ],
           },
           {
-            content: "เธเนเธฒเธฃเธฒเธเธเธฒเธฃเธเธฅเน€เธฃเธทเธญเธเธเธฃเธฐเน€เธ เธ— 'เธงเธดเธเธฒเธเธฒเธฃ' เธกเธตเธเธตเนเธฃเธฐเธ”เธฑเธ?",
+            content: "ผู้รักษาการตามพระราชบัญญัติระเบียบข้าราชการพลเรือน พ.ศ. 2551 คือใคร?",
             difficulty: "MEDIUM",
-            explanation: "เธเนเธฒเธฃเธฒเธเธเธฒเธฃเธเธฃเธฐเน€เธ เธ—เธงเธดเธเธฒเธเธฒเธฃเธกเธต 5 เธฃเธฐเธ”เธฑเธ: เธเธเธดเธเธฑเธ•เธดเธเธฒเธฃ เธเธณเธเธฒเธเธเธฒเธฃ เธเธณเธเธฒเธเธเธฒเธฃเธเธดเน€เธจเธฉ เน€เธเธตเนเธขเธงเธเธฒเธ เธ—เธฃเธเธเธธเธ“เธงเธธเธ’เธด",
+            explanation: "นายกรัฐมนตรีเป็นผู้รักษาการตาม พรบ. ระเบียบข้าราชการพลเรือน 2551",
             options: [
-              { content: "3 เธฃเธฐเธ”เธฑเธ", isCorrect: false, order: 1 },
-              { content: "4 เธฃเธฐเธ”เธฑเธ", isCorrect: false, order: 2 },
-              { content: "5 เธฃเธฐเธ”เธฑเธ", isCorrect: true, order: 3 },
-              { content: "6 เธฃเธฐเธ”เธฑเธ", isCorrect: false, order: 4 },
+              { content: "รัฐมนตรีว่าการกระทรวงการคลัง", isCorrect: false, order: 1 },
+              { content: "นายกรัฐมนตรี", isCorrect: true, order: 2 },
+              { content: "เลขาธิการ ก.พ.", isCorrect: false, order: 3 },
+              { content: "ปลัดสำนักนายกรัฐมนตรี", isCorrect: false, order: 4 },
             ],
           },
           {
-            content: "เธชเธณเธเธฑเธเธเธฒเธ เธ.เธ. เธขเนเธญเธกเธฒเธเธฒเธเธญเธฐเนเธฃ?",
-            difficulty: "EASY",
-            explanation: "เธ.เธ. เธขเนเธญเธกเธฒเธเธฒเธ เธเธ“เธฐเธเธฃเธฃเธกเธเธฒเธฃเธเนเธฒเธฃเธฒเธเธเธฒเธฃเธเธฅเน€เธฃเธทเธญเธ",
+            content: "โทษทางวินัยของข้าราชการพลเรือนมีกี่สถาน?",
+            difficulty: "MEDIUM",
+            explanation: "โทษทางวินัยมี 5 สถาน: ภาคทัณฑ์ ตัดเงินเดือน ลดเงินเดือน ปลดออก ไล่ออก",
             options: [
-              { content: "เธเธญเธเธเธฃเธดเธซเธฒเธฃเธเธฅเน€เธฃเธทเธญเธ", isCorrect: false, order: 1 },
-              { content: "เธเธ“เธฐเธเธฃเธฃเธกเธเธฒเธฃเธเนเธฒเธฃเธฒเธเธเธฒเธฃเธเธฅเน€เธฃเธทเธญเธ", isCorrect: true, order: 2 },
-              { content: "เธเธฃเธกเธเธฑเธ’เธเธฒเธเนเธฒเธฃเธฒเธเธเธฒเธฃ", isCorrect: false, order: 3 },
-              { content: "เธเธญเธเธเธฒเธฃเน€เธเนเธฒเธซเธเนเธฒเธ—เธตเนเธเธฅเน€เธฃเธทเธญเธ", isCorrect: false, order: 4 },
+              { content: "3 สถาน", isCorrect: false, order: 1 },
+              { content: "4 สถาน", isCorrect: false, order: 2 },
+              { content: "5 สถาน", isCorrect: true, order: 3 },
+              { content: "6 สถาน", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "โทษทางวินัยที่ร้ายแรงที่สุดคือ?",
+            difficulty: "EASY",
+            explanation: "ไล่ออกเป็นโทษร้ายแรงที่สุด ผู้ถูกไล่ออกไม่มีสิทธิรับบำเหน็จบำนาญ",
+            options: [
+              { content: "ปลดออก", isCorrect: false, order: 1 },
+              { content: "ไล่ออก", isCorrect: true, order: 2 },
+              { content: "ลดเงินเดือน", isCorrect: false, order: 3 },
+              { content: "ภาคทัณฑ์", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "ก.พ. ย่อมาจากอะไร?",
+            difficulty: "EASY",
+            explanation: "ก.พ. = คณะกรรมการข้าราชการพลเรือน",
+            options: [
+              { content: "กองบริหารพล", isCorrect: false, order: 1 },
+              { content: "คณะกรรมการข้าราชการพลเรือน", isCorrect: true, order: 2 },
+              { content: "การพัฒนาบุคคล", isCorrect: false, order: 3 },
+              { content: "กรมพลเรือน", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "ข้าราชการพลเรือนประเภท 'วิชาการ' มีกี่ระดับ?",
+            difficulty: "MEDIUM",
+            explanation: "ประเภทวิชาการมี 5 ระดับ: ปฏิบัติการ ชำนาญการ ชำนาญการพิเศษ เชี่ยวชาญ ทรงคุณวุฒิ",
+            options: [
+              { content: "3 ระดับ", isCorrect: false, order: 1 },
+              { content: "4 ระดับ", isCorrect: false, order: 2 },
+              { content: "5 ระดับ", isCorrect: true, order: 3 },
+              { content: "6 ระดับ", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "ผู้ที่ถูกลงโทษ 'ปลดออก' มีสิทธิได้รับบำเหน็จบำนาญหรือไม่?",
+            difficulty: "HARD",
+            explanation: "ผู้ถูกปลดออกยังมีสิทธิได้รับบำเหน็จบำนาญ ต่างจากไล่ออกที่ไม่มีสิทธิ",
+            options: [
+              { content: "ไม่มีสิทธิเลย", isCorrect: false, order: 1 },
+              { content: "มีสิทธิได้รับ", isCorrect: true, order: 2 },
+              { content: "ได้รับครึ่งหนึ่ง", isCorrect: false, order: 3 },
+              { content: "ขึ้นอยู่กับศาล", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "องค์กรกลางบริหารงานบุคคลของข้าราชการพลเรือนคือ?",
+            difficulty: "MEDIUM",
+            explanation: "สำนักงาน ก.พ. เป็นองค์กรกลางบริหารงานบุคคลของข้าราชการพลเรือน",
+            options: [
+              { content: "สำนักงาน ก.พ.", isCorrect: true, order: 1 },
+              { content: "กรมบัญชีกลาง", isCorrect: false, order: 2 },
+              { content: "สำนักงบประมาณ", isCorrect: false, order: 3 },
+              { content: "กระทรวงมหาดไทย", isCorrect: false, order: 4 },
             ],
           },
         ],
       },
       {
         name: "Government Ethics",
-        nameTh: "เธเธฃเธฃเธขเธฒเธเธฃเธฃเธ“เธเนเธฒเธฃเธฒเธเธเธฒเธฃ",
+        nameTh: "จริยธรรมข้าราชการ",
         slug: "government-ethics",
-        description: "เธกเธฒเธ•เธฃเธเธฒเธเธเธฃเธดเธขเธเธฃเธฃเธกเนเธฅเธฐเธเธฃเธฃเธขเธฒเธเธฃเธฃเธ“เธเธญเธเธเนเธฒเธฃเธฒเธเธเธฒเธฃ",
+        description: "มาตรฐานจริยธรรมและธรรมาภิบาลของข้าราชการ",
         order: 2,
         questions: [
           {
-            content: "เธกเธฒเธ•เธฃเธเธฒเธเธ—เธฒเธเธเธฃเธดเธขเธเธฃเธฃเธกเธชเธณเธซเธฃเธฑเธเน€เธเนเธฒเธซเธเนเธฒเธ—เธตเนเธเธญเธเธฃเธฑเธ เธ•เธฒเธกเธเธฃเธฐเธฃเธฒเธเธเธฑเธเธเธฑเธ•เธดเธกเธฒเธ•เธฃเธเธฒเธเธ—เธฒเธเธเธฃเธดเธขเธเธฃเธฃเธก เธ.เธจ. 2562 เธกเธตเธเธตเนเธเนเธญ?",
+            content: "หลักธรรมาภิบาล (Good Governance) ประกอบด้วยกี่หลักการ?",
             difficulty: "MEDIUM",
-            explanation: "เธเธฃเธ. เธกเธฒเธ•เธฃเธเธฒเธเธ—เธฒเธเธเธฃเธดเธขเธเธฃเธฃเธก 2562 เธเธณเธซเธเธ”เธกเธฒเธ•เธฃเธเธฒเธเธ—เธฒเธเธเธฃเธดเธขเธเธฃเธฃเธก 7 เธเนเธญ",
+            explanation: "หลักธรรมาภิบาลมี 6 หลัก: นิติธรรม คุณธรรม โปร่งใส มีส่วนร่วม รับผิดชอบ คุ้มค่า",
             options: [
-              { content: "5 เธเนเธญ", isCorrect: false, order: 1 },
-              { content: "7 เธเนเธญ", isCorrect: true, order: 2 },
-              { content: "10 เธเนเธญ", isCorrect: false, order: 3 },
-              { content: "12 เธเนเธญ", isCorrect: false, order: 4 },
+              { content: "4 หลัก", isCorrect: false, order: 1 },
+              { content: "5 หลัก", isCorrect: false, order: 2 },
+              { content: "6 หลัก", isCorrect: true, order: 3 },
+              { content: "8 หลัก", isCorrect: false, order: 4 },
             ],
           },
           {
-            content: "เธเนเธญเนเธ”เธ•เนเธญเนเธเธเธตเนเนเธกเนเนเธเนเธเธฃเธฃเธขเธฒเธเธฃเธฃเธ“เธเธญเธเธเนเธฒเธฃเธฒเธเธเธฒเธฃ?",
-            difficulty: "MEDIUM",
-            explanation: "เธเธฒเธฃเธฃเธฑเธเธชเธดเธเธเธ (เธเธญเธเธเธงเธฑเธเธ—เธตเนเธกเธตเธกเธนเธฅเธเนเธฒเน€เธเธดเธเธเธงเนเธฒเธเธณเธซเธเธ”) เธ–เธทเธญเน€เธเนเธเธเธฒเธฃเธฅเธฐเน€เธกเธดเธ”เธเธฃเธฃเธขเธฒเธเธฃเธฃเธ“ เนเธกเนเนเธเนเธเธฃเธฃเธขเธฒเธเธฃเธฃเธ“",
+            content: "หลัก 'ความโปร่งใส' ในธรรมาภิบาลหมายถึง?",
+            difficulty: "EASY",
+            explanation: "ความโปร่งใส = การเปิดเผยข้อมูล ตรวจสอบได้",
             options: [
-              { content: "เธเธทเนเธญเธชเธฑเธ•เธขเนเธชเธธเธเธฃเธดเธ•", isCorrect: false, order: 1 },
-              { content: "เธกเธธเนเธเธเธฅเธชเธฑเธกเธคเธ—เธเธดเนเธเธญเธเธเธฒเธ", isCorrect: false, order: 2 },
-              { content: "เธฃเธฑเธเธชเธดเธเธเธเธเธฒเธเธเธนเนเธกเธฒเธ•เธดเธ”เธ•เนเธญ", isCorrect: true, order: 3 },
-              { content: "เธขเธถเธ”เธ–เธทเธญเธเธฃเธฐเนเธขเธเธเนเธชเนเธงเธเธฃเธงเธก", isCorrect: false, order: 4 },
+              { content: "การปกปิดข้อมูล", isCorrect: false, order: 1 },
+              { content: "การเปิดเผยข้อมูลและตรวจสอบได้", isCorrect: true, order: 2 },
+              { content: "การทำงานเร็ว", isCorrect: false, order: 3 },
+              { content: "การประหยัด", isCorrect: false, order: 4 },
             ],
           },
           {
-            content: "เธซเธฒเธเธเนเธฒเธฃเธฒเธเธเธฒเธฃเธฃเธฑเธเธเธญเธเธเธงเธฑเธเนเธเธเนเธงเธเน€เธ—เธจเธเธฒเธฅ เธ•เธฒเธกเธฃเธฐเน€เธเธตเธขเธเธชเธณเธเธฑเธเธเธฒเธขเธเธฃเธฑเธเธกเธเธ•เธฃเธตเธงเนเธฒเธ”เนเธงเธขเธเธฒเธฃเนเธซเนเธซเธฃเธทเธญเธฃเธฑเธเธเธญเธเธเธงเธฑเธ เธชเธฒเธกเธฒเธฃเธ–เธฃเธฑเธเนเธ”เนเนเธกเนเน€เธเธดเธเธกเธนเธฅเธเนเธฒเน€เธ—เนเธฒเนเธ”?",
+            content: "การกระทำใดถือเป็นผลประโยชน์ทับซ้อน (Conflict of Interest)?",
             difficulty: "HARD",
-            explanation: "เธ•เธฒเธกเธฃเธฐเน€เธเธตเธขเธเธชเธณเธเธฑเธเธเธฒเธขเธเธฃเธฑเธเธกเธเธ•เธฃเธตเธฏ เธเนเธฒเธฃเธฒเธเธเธฒเธฃเธชเธฒเธกเธฒเธฃเธ–เธฃเธฑเธเธเธญเธเธเธงเธฑเธเนเธเน€เธ—เธจเธเธฒเธฅเนเธ”เนเนเธกเนเน€เธเธดเธ 3,000 เธเธฒเธ—",
+            explanation: "การใช้ตำแหน่งหน้าที่เอื้อประโยชน์ส่วนตัวหรือพวกพ้องถือเป็นผลประโยชน์ทับซ้อน",
             options: [
-              { content: "1,000 เธเธฒเธ—", isCorrect: false, order: 1 },
-              { content: "3,000 เธเธฒเธ—", isCorrect: true, order: 2 },
-              { content: "5,000 เธเธฒเธ—", isCorrect: false, order: 3 },
-              { content: "10,000 เธเธฒเธ—", isCorrect: false, order: 4 },
+              { content: "ทำงานตรงเวลา", isCorrect: false, order: 1 },
+              { content: "ใช้ตำแหน่งเอื้อประโยชน์ส่วนตัว", isCorrect: true, order: 2 },
+              { content: "ช่วยเหลือประชาชน", isCorrect: false, order: 3 },
+              { content: "ประชุมตามวาระ", isCorrect: false, order: 4 },
             ],
           },
           {
-            content: "เธงเธดเธเธฑเธขเธ—เธตเนเธฃเนเธฒเธขเนเธฃเธเธ—เธตเนเธชเธธเธ”เธชเธณเธซเธฃเธฑเธเธเนเธฒเธฃเธฒเธเธเธฒเธฃเธเธทเธญเธญเธฐเนเธฃ?",
+            content: "ค่านิยมหลักของข้าราชการข้อใดเน้น 'การยึดมั่นในความถูกต้องชอบธรรม'?",
             difficulty: "MEDIUM",
-            explanation: "เธเธฒเธฃเนเธเธญเธญเธเธฃเธฑเธเนเธเนเธเธฒเธเธ•เนเธฒเธเธเธฃเธฐเน€เธ—เธจ เธซเธฃเธทเธญเธเธฒเธฃเธ—เธธเธเธฃเธดเธ•เธ•เนเธญเธซเธเนเธฒเธ—เธตเน เน€เธเนเธเธงเธดเธเธฑเธขเธฃเนเธฒเธขเนเธฃเธเธ—เธตเนเธญเธฒเธเธเธณเนเธเธชเธนเนเธเธฒเธฃเนเธซเนเธญเธญเธ เธเธฅเธ”เธญเธญเธ เธซเธฃเธทเธญเนเธฅเนเธญเธญเธ",
+            explanation: "การยึดมั่นในความถูกต้องชอบธรรมและจริยธรรมเป็นค่านิยมหลักของข้าราชการ",
             options: [
-              { content: "เธเธฒเธฃเธกเธฒเธชเธฒเธข", isCorrect: false, order: 1 },
-              { content: "เธเธฒเธฃเธฅเธฒเธเธฒเธ”", isCorrect: false, order: 2 },
-              { content: "เธเธฒเธฃเธ—เธธเธเธฃเธดเธ•เธ•เนเธญเธซเธเนเธฒเธ—เธตเนเธฃเธฒเธเธเธฒเธฃ", isCorrect: true, order: 3 },
-              { content: "เธเธฒเธฃเนเธชเธ”เธเธเธงเธฒเธกเธเธดเธ”เน€เธซเนเธเธ—เธฒเธเธเธฒเธฃเน€เธกเธทเธญเธ", isCorrect: false, order: 4 },
+              { content: "ทำงานเร็ว", isCorrect: false, order: 1 },
+              { content: "ยึดมั่นความถูกต้องชอบธรรม", isCorrect: true, order: 2 },
+              { content: "ประหยัดงบ", isCorrect: false, order: 3 },
+              { content: "ทำงานคนเดียว", isCorrect: false, order: 4 },
             ],
           },
           {
-            content: "เธเนเธฒเธฃเธฒเธเธเธฒเธฃเธกเธตเธซเธเนเธฒเธ—เธตเนเธฃเธฑเธเธฉเธฒเธเธงเธฒเธกเธฅเธฑเธเธฃเธฒเธเธเธฒเธฃ เนเธเธฃเธกเธตเธญเธณเธเธฒเธเธญเธเธธเธเธฒเธ•เนเธซเนเน€เธเธดเธ”เน€เธเธขเธเธงเธฒเธกเธฅเธฑเธเธ—เธฒเธเธฃเธฒเธเธเธฒเธฃ?",
-            difficulty: "HARD",
-            explanation: "เธเธฒเธฃเน€เธเธดเธ”เน€เธเธขเธเนเธญเธกเธนเธฅเธฃเธฒเธเธเธฒเธฃเธ•เนเธญเธเนเธ”เนเธฃเธฑเธเธญเธเธธเธเธฒเธ•เธเธฒเธเธเธนเนเธเธฑเธเธเธฑเธเธเธฑเธเธเธฒเธเธนเนเธกเธตเธญเธณเธเธฒเธเธซเธฃเธทเธญเธ•เธฒเธกเธเธเธซเธกเธฒเธขเธ—เธตเนเธเธณเธซเธเธ”",
+            content: "การรับสินบนของข้าราชการถือเป็นความผิดประเภทใด?",
+            difficulty: "MEDIUM",
+            explanation: "การรับสินบนถือเป็นการทุจริตต่อหน้าที่ ซึ่งเป็นความผิดวินัยร้ายแรงและความผิดอาญา",
             options: [
-              { content: "เธเนเธฒเธฃเธฒเธเธเธฒเธฃเธชเธฒเธกเธฒเธฃเธ–เธ•เธฑเธ”เธชเธดเธเนเธเน€เธญเธเนเธ”เน", isCorrect: false, order: 1 },
-              { content: "เธเธนเนเธเธฑเธเธเธฑเธเธเธฑเธเธเธฒเธซเธฃเธทเธญเธเธนเนเธกเธตเธญเธณเธเธฒเธเธ•เธฒเธกเธเธเธซเธกเธฒเธข", isCorrect: true, order: 2 },
-              { content: "เน€เธเธทเนเธญเธเธฃเนเธงเธกเธเธฒเธ", isCorrect: false, order: 3 },
-              { content: "เธเธฃเธฐเธเธฒเธเธเธ—เธฑเนเธงเนเธ", isCorrect: false, order: 4 },
+              { content: "ความผิดเล็กน้อย", isCorrect: false, order: 1 },
+              { content: "การทุจริตต่อหน้าที่ (ผิดร้ายแรง)", isCorrect: true, order: 2 },
+              { content: "ไม่ผิดถ้าไม่มีคนรู้", isCorrect: false, order: 3 },
+              { content: "เป็นเรื่องส่วนตัว", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "หลัก 'ความคุ้มค่า' ในธรรมาภิบาลหมายถึง?",
+            difficulty: "EASY",
+            explanation: "ความคุ้มค่า = การใช้ทรัพยากรอย่างประหยัดและเกิดประโยชน์สูงสุด",
+            options: [
+              { content: "ใช้เงินให้มาก", isCorrect: false, order: 1 },
+              { content: "ใช้ทรัพยากรอย่างประหยัดและเกิดประโยชน์สูงสุด", isCorrect: true, order: 2 },
+              { content: "ทำงานช้า ๆ", isCorrect: false, order: 3 },
+              { content: "ซื้อของแพง", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "ข้าราชการที่ดีควรยึดถือประโยชน์ของใครเป็นหลัก?",
+            difficulty: "EASY",
+            explanation: "ข้าราชการที่ดีต้องยึดถือประโยชน์ส่วนรวมและประชาชนเป็นหลัก",
+            options: [
+              { content: "ประโยชน์ส่วนตัว", isCorrect: false, order: 1 },
+              { content: "ประโยชน์ส่วนรวม/ประชาชน", isCorrect: true, order: 2 },
+              { content: "ประโยชน์ของหัวหน้า", isCorrect: false, order: 3 },
+              { content: "ประโยชน์ของพรรคพวก", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "หลัก 'การมีส่วนร่วม' ในธรรมาภิบาลหมายถึง?",
+            difficulty: "MEDIUM",
+            explanation: "การเปิดโอกาสให้ประชาชนมีส่วนร่วมในการตัดสินใจและตรวจสอบการทำงานของรัฐ",
+            options: [
+              { content: "ทำงานคนเดียว", isCorrect: false, order: 1 },
+              { content: "เปิดโอกาสให้ประชาชนมีส่วนร่วม", isCorrect: true, order: 2 },
+              { content: "ปิดข้อมูล", isCorrect: false, order: 3 },
+              { content: "ทำตามคำสั่งเท่านั้น", isCorrect: false, order: 4 },
             ],
           },
         ],
@@ -690,137 +1365,214 @@ const subjects = [
   },
   {
     name: "General Knowledge",
-    nameTh: "เธเธงเธฒเธกเธฃเธนเนเธ—เธฑเนเธงเนเธ",
+    nameTh: "ความรู้ทั่วไป",
     slug: "general-knowledge",
-    description: "เธเธงเธฒเธกเธฃเธนเนเธ—เธฑเนเธงเนเธ เน€เธซเธ•เธธเธเธฒเธฃเธ“เนเธเธฑเธเธเธธเธเธฑเธ เนเธฅเธฐเธเธฃเธฐเธงเธฑเธ•เธดเธจเธฒเธชเธ•เธฃเนเนเธ—เธข",
-    icon: "๐",
+    description: "ความรู้ทั่วไป เหตุการณ์ปัจจุบัน และประวัติศาสตร์ไทย",
+    icon: "🌏",
     color: "#10B981",
     order: 5,
     topics: [
       {
         name: "Thai History & Society",
-        nameTh: "เธเธฃเธฐเธงเธฑเธ•เธดเธจเธฒเธชเธ•เธฃเนเนเธฅเธฐเธชเธฑเธเธเธกเนเธ—เธข",
+        nameTh: "ประวัติศาสตร์และสังคมไทย",
         slug: "thai-history",
-        description: "เธเธฃเธฐเธงเธฑเธ•เธดเธจเธฒเธชเธ•เธฃเนเนเธ—เธขเนเธฅเธฐเธชเธฑเธเธเธกเนเธ—เธขเธ—เธตเนเธญเธญเธเธชเธญเธ",
+        description: "ประวัติศาสตร์ไทยและสังคมไทยที่ออกสอบ",
         order: 1,
         questions: [
           {
-            content: "เธเธฃเธธเธเธฃเธฑเธ•เธเนเธเธชเธดเธเธ—เธฃเนเธเนเธญเธ•เธฑเนเธเธเธถเนเธเนเธเธเธต เธ.เธจ. เนเธ”?",
+            content: "กรุงรัตนโกสินทร์ถูกตั้งขึ้นในปี พ.ศ. ใด?",
             difficulty: "EASY",
-            explanation: "เธเธฃเธธเธเธฃเธฑเธ•เธเนเธเธชเธดเธเธ—เธฃเนเธเนเธญเธ•เธฑเนเธเน€เธกเธทเนเธญ เธ.เธจ. 2325 เนเธ”เธขเธเธฃเธฐเธเธฒเธ—เธชเธกเน€เธ”เนเธเธเธฃเธฐเธเธธเธ—เธเธขเธญเธ”เธเนเธฒเธเธธเธฌเธฒเนเธฅเธเธกเธซเธฒเธฃเธฒเธ เธฃเธฑเธเธเธฒเธฅเธ—เธตเน 1",
+            explanation: "กรุงรัตนโกสินทร์ตั้งขึ้นเมื่อ พ.ศ. 2325 โดยพระบาทสมเด็จพระพุทธยอดฟ้าจุฬาโลกมหาราช (ร.1)",
             options: [
-              { content: "เธ.เธจ. 2310", isCorrect: false, order: 1 },
-              { content: "เธ.เธจ. 2325", isCorrect: true, order: 2 },
-              { content: "เธ.เธจ. 2350", isCorrect: false, order: 3 },
-              { content: "เธ.เธจ. 2400", isCorrect: false, order: 4 },
+              { content: "พ.ศ. 2310", isCorrect: false, order: 1 },
+              { content: "พ.ศ. 2325", isCorrect: true, order: 2 },
+              { content: "พ.ศ. 2350", isCorrect: false, order: 3 },
+              { content: "พ.ศ. 2400", isCorrect: false, order: 4 },
             ],
           },
           {
-            content: "เธงเธฑเธเธเนเธญเนเธซเนเธเธเธฒเธ•เธดเธเธญเธเนเธ—เธขเธ•เธฃเธเธเธฑเธเธงเธฑเธเนเธ”?",
+            content: "วันพ่อแห่งชาติของไทยตรงกับวันใด?",
             difficulty: "EASY",
-            explanation: "เธงเธฑเธเธเนเธญเนเธซเนเธเธเธฒเธ•เธดเธ•เธฃเธเธเธฑเธเธงเธฑเธเธ—เธตเน 5 เธเธฑเธเธงเธฒเธเธก เธเธถเนเธเน€เธเนเธเธงเธฑเธเธเธฅเนเธฒเธขเธงเธฑเธเธเธฃเธฐเธเธฃเธกเธฃเธฒเธเธชเธกเธ เธเธเธญเธเธฃเธฑเธเธเธฒเธฅเธ—เธตเน 9",
+            explanation: "วันพ่อแห่งชาติตรงกับวันที่ 5 ธันวาคม ซึ่งเป็นวันคล้ายวันพระราชสมภพของรัชกาลที่ 9",
             options: [
-              { content: "5 เธเธฑเธเธงเธฒเธเธก", isCorrect: true, order: 1 },
-              { content: "12 เธชเธดเธเธซเธฒเธเธก", isCorrect: false, order: 2 },
-              { content: "1 เธกเธเธฃเธฒเธเธก", isCorrect: false, order: 3 },
-              { content: "10 เธเธฑเธเธงเธฒเธเธก", isCorrect: false, order: 4 },
+              { content: "5 ธันวาคม", isCorrect: true, order: 1 },
+              { content: "12 สิงหาคม", isCorrect: false, order: 2 },
+              { content: "1 มกราคม", isCorrect: false, order: 3 },
+              { content: "10 ธันวาคม", isCorrect: false, order: 4 },
             ],
           },
           {
-            content: "เธเธฃเธฐเน€เธ—เธจเนเธ—เธขเธเธเธเธฃเธญเธเธ”เนเธงเธขเธฃเธฐเธเธญเธเนเธ”เนเธเธเธฑเธเธเธธเธเธฑเธ?",
+            content: "ประเทศไทยปกครองด้วยระบอบใดในปัจจุบัน?",
             difficulty: "EASY",
-            explanation: "เนเธ—เธขเธเธเธเธฃเธญเธเธ”เนเธงเธขเธฃเธฐเธเธญเธเธเธฃเธฐเธเธฒเธเธดเธเนเธ•เธขเธญเธฑเธเธกเธตเธเธฃเธฐเธกเธซเธฒเธเธฉเธฑเธ•เธฃเธดเธขเนเธ—เธฃเธเน€เธเนเธเธเธฃเธฐเธกเธธเธ",
+            explanation: "ไทยปกครองด้วยระบอบประชาธิปไตยอันมีพระมหากษัตริย์ทรงเป็นประมุข",
             options: [
-              { content: "เธชเธฒเธเธฒเธฃเธ“เธฃเธฑเธ", isCorrect: false, order: 1 },
-              { content: "เธเธฃเธฐเธเธฒเธเธดเธเนเธ•เธขเธญเธฑเธเธกเธตเธเธฃเธฐเธกเธซเธฒเธเธฉเธฑเธ•เธฃเธดเธขเนเธ—เธฃเธเน€เธเนเธเธเธฃเธฐเธกเธธเธ", isCorrect: true, order: 2 },
-              { content: "เธชเธกเธเธนเธฃเธ“เธฒเธเธฒเธชเธดเธ—เธเธดเธฃเธฒเธ", isCorrect: false, order: 3 },
-              { content: "เธชเธฑเธเธเธกเธเธดเธขเธก", isCorrect: false, order: 4 },
+              { content: "สาธารณรัฐ", isCorrect: false, order: 1 },
+              { content: "ประชาธิปไตยอันมีพระมหากษัตริย์ทรงเป็นประมุข", isCorrect: true, order: 2 },
+              { content: "สมบูรณาญาสิทธิราชย์", isCorrect: false, order: 3 },
+              { content: "สังคมนิยม", isCorrect: false, order: 4 },
             ],
           },
           {
-            content: "เธเธเธเธฒเธ•เธดเนเธ—เธขเธกเธตเธเธตเนเธชเธต?",
+            content: "ธงชาติไทยมีกี่สี?",
             difficulty: "EASY",
-            explanation: "เธเธเธเธฒเธ•เธดเนเธ—เธขเธกเธต 3 เธชเธต เธเธทเธญ เนเธ”เธ เธเธฒเธง เนเธฅเธฐเธเนเธณเน€เธเธดเธ",
+            explanation: "ธงชาติไทยมี 3 สี คือ แดง ขาว และน้ำเงิน",
             options: [
-              { content: "2 เธชเธต", isCorrect: false, order: 1 },
-              { content: "3 เธชเธต", isCorrect: true, order: 2 },
-              { content: "4 เธชเธต", isCorrect: false, order: 3 },
-              { content: "5 เธชเธต", isCorrect: false, order: 4 },
+              { content: "2 สี", isCorrect: false, order: 1 },
+              { content: "3 สี", isCorrect: true, order: 2 },
+              { content: "4 สี", isCorrect: false, order: 3 },
+              { content: "5 สี", isCorrect: false, order: 4 },
             ],
           },
           {
-            content: "เธฃเธฑเธเธเธฃเธฃเธกเธเธนเธเธเธเธฑเธเธเธฑเธเธเธธเธเธฑเธเธเธญเธเนเธ—เธขเธเธฃเธฐเธเธฒเธจเนเธเนเน€เธกเธทเนเธญ เธ.เธจ. เนเธ”?",
+            content: "ไทยเปลี่ยนแปลงการปกครองเป็นระบอบประชาธิปไตยในปี พ.ศ. ใด?",
             difficulty: "MEDIUM",
-            explanation: "เธฃเธฑเธเธเธฃเธฃเธกเธเธนเธเนเธซเนเธเธฃเธฒเธเธญเธฒเธ“เธฒเธเธฑเธเธฃเนเธ—เธข เธ.เธจ. 2560 เธเธฃเธฐเธเธฒเธจเนเธเนเน€เธกเธทเนเธญเธงเธฑเธเธ—เธตเน 6 เน€เธกเธฉเธฒเธขเธ เธ.เธจ. 2560",
+            explanation: "เปลี่ยนแปลงการปกครอง 24 มิถุนายน พ.ศ. 2475 โดยคณะราษฎร",
             options: [
-              { content: "เธ.เธจ. 2550", isCorrect: false, order: 1 },
-              { content: "เธ.เธจ. 2557", isCorrect: false, order: 2 },
-              { content: "เธ.เธจ. 2560", isCorrect: true, order: 3 },
-              { content: "เธ.เธจ. 2562", isCorrect: false, order: 4 },
+              { content: "พ.ศ. 2475", isCorrect: true, order: 1 },
+              { content: "พ.ศ. 2500", isCorrect: false, order: 2 },
+              { content: "พ.ศ. 2435", isCorrect: false, order: 3 },
+              { content: "พ.ศ. 2490", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "เมืองหลวงของอาณาจักรสุโขทัยคือ?",
+            difficulty: "EASY",
+            explanation: "อาณาจักรสุโขทัยมีเมืองหลวงคือเมืองสุโขทัย",
+            options: [
+              { content: "อยุธยา", isCorrect: false, order: 1 },
+              { content: "สุโขทัย", isCorrect: true, order: 2 },
+              { content: "ลพบุรี", isCorrect: false, order: 3 },
+              { content: "นครปฐม", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "วันรัฐธรรมนูญตรงกับวันที่เท่าไร?",
+            difficulty: "EASY",
+            explanation: "วันรัฐธรรมนูญตรงกับวันที่ 10 ธันวาคมของทุกปี",
+            options: [
+              { content: "5 ธันวาคม", isCorrect: false, order: 1 },
+              { content: "10 ธันวาคม", isCorrect: true, order: 2 },
+              { content: "1 มกราคม", isCorrect: false, order: 3 },
+              { content: "12 สิงหาคม", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "กรุงศรีอยุธยาเสียกรุงครั้งที่ 2 แก่พม่าในปี พ.ศ. ใด?",
+            difficulty: "MEDIUM",
+            explanation: "เสียกรุงศรีอยุธยาครั้งที่ 2 ในปี พ.ศ. 2310",
+            options: [
+              { content: "พ.ศ. 2112", isCorrect: false, order: 1 },
+              { content: "พ.ศ. 2310", isCorrect: true, order: 2 },
+              { content: "พ.ศ. 2325", isCorrect: false, order: 3 },
+              { content: "พ.ศ. 2475", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "อำนาจอธิปไตยของไทยแบ่งออกเป็นกี่ฝ่าย?",
+            difficulty: "EASY",
+            explanation: "อำนาจอธิปไตยแบ่งเป็น 3 ฝ่าย: นิติบัญญัติ บริหาร และตุลาการ",
+            options: [
+              { content: "2 ฝ่าย", isCorrect: false, order: 1 },
+              { content: "3 ฝ่าย", isCorrect: true, order: 2 },
+              { content: "4 ฝ่าย", isCorrect: false, order: 3 },
+              { content: "5 ฝ่าย", isCorrect: false, order: 4 },
             ],
           },
         ],
       },
       {
         name: "Current Affairs",
-        nameTh: "เน€เธซเธ•เธธเธเธฒเธฃเธ“เนเธเธฑเธเธเธธเธเธฑเธ",
+        nameTh: "เหตุการณ์ปัจจุบัน",
         slug: "current-affairs",
-        description: "เธเนเธฒเธงเธชเธฒเธฃเนเธฅเธฐเน€เธซเธ•เธธเธเธฒเธฃเธ“เนเธชเธณเธเธฑเธเธ—เธตเนเธเธงเธฃเธฃเธนเน",
+        description: "ข่าวสารและเหตุการณ์สำคัญที่ควรรู้",
         order: 2,
         questions: [
           {
-            content: "ASEAN เธเนเธญเธ•เธฑเนเธเธเธถเนเธเนเธเธเธต เธ.เธจ. เนเธ”?",
+            content: "ASEAN ก่อตั้งขึ้นในปี พ.ศ. ใด?",
             difficulty: "EASY",
-            explanation: "ASEAN (Association of Southeast Asian Nations) เธเนเธญเธ•เธฑเนเธเน€เธกเธทเนเธญเธงเธฑเธเธ—เธตเน 8 เธชเธดเธเธซเธฒเธเธก เธ.เธจ. 1967 (เธ.เธจ. 2510)",
+            explanation: "ASEAN ก่อตั้งเมื่อปี ค.ศ. 1967 (พ.ศ. 2510)",
             options: [
-              { content: "เธ.เธจ. 1945", isCorrect: false, order: 1 },
-              { content: "เธ.เธจ. 1960", isCorrect: false, order: 2 },
-              { content: "เธ.เธจ. 1967", isCorrect: true, order: 3 },
-              { content: "เธ.เธจ. 1975", isCorrect: false, order: 4 },
+              { content: "ค.ศ. 1945", isCorrect: false, order: 1 },
+              { content: "ค.ศ. 1960", isCorrect: false, order: 2 },
+              { content: "ค.ศ. 1967", isCorrect: true, order: 3 },
+              { content: "ค.ศ. 1975", isCorrect: false, order: 4 },
             ],
           },
           {
-            content: "เธเธฃเธฐเน€เธ—เธจเนเธ—เธขเน€เธเนเธเธชเธกเธฒเธเธดเธเธญเธเธเนเธเธฃเธฃเธฐเธซเธงเนเธฒเธเธเธฃเธฐเน€เธ—เธจเนเธ”เธ•เนเธญเนเธเธเธตเน?",
+            content: "สกุลเงินของสหภาพยุโรป (EU) คืออะไร?",
             difficulty: "EASY",
-            explanation: "เนเธ—เธขเน€เธเนเธเธชเธกเธฒเธเธดเธ UN (เธญเธเธเนเธเธฒเธฃเธชเธซเธเธฃเธฐเธเธฒเธเธฒเธ•เธด) เธ•เธฑเนเธเนเธ•เนเธเธต 1946",
+            explanation: "สกุลเงินของ EU คือ ยูโร (Euro)",
             options: [
-              { content: "NATO", isCorrect: false, order: 1 },
-              { content: "UN", isCorrect: true, order: 2 },
-              { content: "EU", isCorrect: false, order: 3 },
-              { content: "G7", isCorrect: false, order: 4 },
+              { content: "ดอลลาร์", isCorrect: false, order: 1 },
+              { content: "ยูโร", isCorrect: true, order: 2 },
+              { content: "ปอนด์", isCorrect: false, order: 3 },
+              { content: "เยน", isCorrect: false, order: 4 },
             ],
           },
           {
-            content: "เธชเธเธธเธฅเน€เธเธดเธเธเธญเธเธชเธซเธ เธฒเธเธขเธธเนเธฃเธ (EU) เธเธทเธญเธญเธฐเนเธฃ?",
-            difficulty: "EASY",
-            explanation: "เธชเธเธธเธฅเน€เธเธดเธเธเธญเธ EU เธเธทเธญ เธขเธนเนเธฃ (Euro)",
-            options: [
-              { content: "เธ”เธญเธฅเธฅเธฒเธฃเน", isCorrect: false, order: 1 },
-              { content: "เธขเธนเนเธฃ", isCorrect: true, order: 2 },
-              { content: "เธเธญเธเธ”เน", isCorrect: false, order: 3 },
-              { content: "เน€เธขเธ", isCorrect: false, order: 4 },
-            ],
-          },
-          {
-            content: "SDGs เธเธทเธญเน€เธเนเธฒเธซเธกเธฒเธขเธเธฒเธฃเธเธฑเธ’เธเธฒเธ—เธตเนเธขเธฑเนเธเธขเธทเธเธเธญเธเธญเธเธเนเธเธฃเนเธ”?",
+            content: "SDGs คือเป้าหมายการพัฒนาที่ยั่งยืนของหน่วยงานใด?",
             difficulty: "MEDIUM",
-            explanation: "SDGs (Sustainable Development Goals) เน€เธเนเธเน€เธเนเธฒเธซเธกเธฒเธข 17 เธเนเธญเธเธญเธเธชเธซเธเธฃเธฐเธเธฒเธเธฒเธ•เธด (UN) เธเธณเธซเธเธ”เนเธเธเธต 2015",
+            explanation: "SDGs เป็นเป้าหมาย 17 ข้อขององค์การสหประชาชาติ (UN)",
             options: [
               { content: "World Bank", isCorrect: false, order: 1 },
               { content: "ASEAN", isCorrect: false, order: 2 },
-              { content: "เธชเธซเธเธฃเธฐเธเธฒเธเธฒเธ•เธด (UN)", isCorrect: true, order: 3 },
+              { content: "สหประชาชาติ (UN)", isCorrect: true, order: 3 },
               { content: "WHO", isCorrect: false, order: 4 },
             ],
           },
           {
-            content: "Thailand 4.0 เน€เธเนเธเธเนเธขเธเธฒเธขเธเธญเธเธฃเธฑเธเธเธฒเธฅเนเธ—เธขเธ—เธตเนเน€เธเนเธเน€เธฃเธทเนเธญเธเนเธ”?",
-            difficulty: "MEDIUM",
-            explanation: "Thailand 4.0 เน€เธเนเธเธเนเธขเธเธฒเธขเธ—เธตเนเน€เธเนเธเธเธฒเธฃเธเธฑเธ’เธเธฒเน€เธจเธฃเธฉเธเธเธดเธเนเธ”เธขเนเธเนเธเธงเธฑเธ•เธเธฃเธฃเธกเนเธฅเธฐเน€เธ—เธเนเธเนเธฅเธขเธตเน€เธเนเธเธ•เธฑเธงเธเธฑเธเน€เธเธฅเธทเนเธญเธ",
+            content: "องค์การการค้าโลกใช้อักษรย่อว่าอะไร?",
+            difficulty: "EASY",
+            explanation: "WTO = World Trade Organization (องค์การการค้าโลก)",
             options: [
-              { content: "เธเธฒเธฃเธ—เนเธญเธเน€เธ—เธตเนเธขเธง", isCorrect: false, order: 1 },
-              { content: "เธเธฒเธฃเน€เธเธฉเธ•เธฃ", isCorrect: false, order: 2 },
-              { content: "เธเธงเธฑเธ•เธเธฃเธฃเธกเนเธฅเธฐเน€เธ—เธเนเธเนเธฅเธขเธต", isCorrect: true, order: 3 },
-              { content: "เธญเธธเธ•เธชเธฒเธซเธเธฃเธฃเธกเธซเธเธฑเธ", isCorrect: false, order: 4 },
+              { content: "WHO", isCorrect: false, order: 1 },
+              { content: "WTO", isCorrect: true, order: 2 },
+              { content: "IMF", isCorrect: false, order: 3 },
+              { content: "WWF", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "สำนักงานใหญ่ของสหประชาชาติ (UN) ตั้งอยู่ที่เมืองใด?",
+            difficulty: "MEDIUM",
+            explanation: "สำนักงานใหญ่ UN ตั้งอยู่ที่นครนิวยอร์ก สหรัฐอเมริกา",
+            options: [
+              { content: "เจนีวา", isCorrect: false, order: 1 },
+              { content: "นิวยอร์ก", isCorrect: true, order: 2 },
+              { content: "ปารีส", isCorrect: false, order: 3 },
+              { content: "ลอนดอน", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "ปัจจุบันอาเซียน (ASEAN) มีสมาชิกกี่ประเทศ?",
+            difficulty: "EASY",
+            explanation: "อาเซียนมีสมาชิก 10 ประเทศ",
+            options: [
+              { content: "8 ประเทศ", isCorrect: false, order: 1 },
+              { content: "10 ประเทศ", isCorrect: true, order: 2 },
+              { content: "12 ประเทศ", isCorrect: false, order: 3 },
+              { content: "15 ประเทศ", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "WHO เป็นองค์กรที่ดูแลด้านใด?",
+            difficulty: "EASY",
+            explanation: "WHO = World Health Organization ดูแลด้านสุขภาพ/สาธารณสุขโลก",
+            options: [
+              { content: "การค้า", isCorrect: false, order: 1 },
+              { content: "สุขภาพ/สาธารณสุข", isCorrect: true, order: 2 },
+              { content: "การศึกษา", isCorrect: false, order: 3 },
+              { content: "การเงิน", isCorrect: false, order: 4 },
+            ],
+          },
+          {
+            content: "GDP ย่อมาจากอะไร?",
+            difficulty: "MEDIUM",
+            explanation: "GDP = Gross Domestic Product (ผลิตภัณฑ์มวลรวมในประเทศ)",
+            options: [
+              { content: "Global Domestic Price", isCorrect: false, order: 1 },
+              { content: "Gross Domestic Product", isCorrect: true, order: 2 },
+              { content: "General Data Protection", isCorrect: false, order: 3 },
+              { content: "Gross Direct Profit", isCorrect: false, order: 4 },
             ],
           },
         ],
@@ -829,21 +1581,333 @@ const subjects = [
   },
 ];
 
+// ──────────────────────────────────────────────────────────────────────────
+// บทเรียน/เนื้อหา (ผูกตาม topic slug) — Markdown แบบเบา
+// ──────────────────────────────────────────────────────────────────────────
+type SeedLesson = { title: string; titleTh: string; content: string; order: number };
+
+const lessons: Record<string, SeedLesson[]> = {
+  "number-series": [
+    {
+      title: "Number Series Techniques",
+      titleTh: "เทคนิคพิชิตอนุกรมตัวเลข",
+      order: 1,
+      content: `# อนุกรมตัวเลข (Number Series)
+
+อนุกรมตัวเลขคือชุดตัวเลขที่เรียงตามกฎเกณฑ์บางอย่าง หน้าที่ของเราคือ **หากฎ** แล้วเติมตัวที่หายไป
+
+## รูปแบบที่พบบ่อย
+
+1. **บวก/ลบคงที่** — เช่น 3, 6, 9, 12 (+3 ทุกตัว)
+2. **คูณ/หารคงที่** — เช่น 2, 4, 8, 16 (×2 ทุกตัว)
+3. **ผลต่างเพิ่มขึ้นเรื่อย ๆ** — เช่น 1, 2, 4, 7, 11 (+1, +2, +3, +4)
+4. **กำลังสอง/กำลังสาม** — เช่น 1, 4, 9, 16, 25 (1², 2², 3²...)
+5. **ฟีโบนักชี** — ตัวถัดไป = ผลบวกของสองตัวก่อนหน้า เช่น 1, 1, 2, 3, 5, 8
+
+## เทคนิคทำข้อสอบ
+- เขียน **ผลต่าง** ระหว่างตัวเลขแต่ละคู่ก่อนเสมอ
+- ถ้าผลต่างไม่คงที่ ให้ดูว่าผลต่างเพิ่ม/ลดเป็นรูปแบบไหน
+- ลองทั้งบวกและคูณ บางข้อเป็นการสลับสองชุด
+
+> ฝึกบ่อย ๆ ตาจะไวขึ้นเอง แนะนำให้จับเวลาข้อละไม่เกิน 30 วินาที`,
+    },
+  ],
+  "logic-reasoning": [
+    {
+      title: "Logical Reasoning Basics",
+      titleTh: "หลักการคิดเชิงตรรกะและเงื่อนไข",
+      order: 1,
+      content: `# ตรรกศาสตร์และการให้เหตุผล
+
+## การให้เหตุผลแบบนิรนัย (Syllogism)
+ถ้า **ทุก A เป็น B** และ **C เป็น A** ดังนั้น **C เป็น B**
+
+ตัวอย่าง: ทุกคนที่ขยันสอบผ่าน + สมชายขยัน → สมชายสอบผ่าน
+
+## กฎที่ควรจำ
+- **Transitive**: ถ้า A > B และ B > C แล้ว A > C
+- **Modus Ponens**: ถ้า P→Q และ P จริง แล้ว Q จริง
+- **Modus Tollens**: ถ้า P→Q และ Q เท็จ แล้ว P เท็จ
+
+## คำบอกปริมาณ
+- "ทุก/ทั้งหมด" = 100%
+- "บาง" = อย่างน้อย 1 (สรุปได้แค่ว่ามีอยู่จริง)
+- "ไม่มี" = 0%
+
+## โจทย์คำนวณพื้นฐาน
+- 1 โหล = 12, 1 กุรุส = 144
+- ร้อยละ: ลด x% = ราคา × (1 − x/100)
+
+> อ่านโจทย์ให้ครบ ระวังคำว่า "ไม่" และ "ยกเว้น" ที่พลิกความหมาย`,
+    },
+  ],
+  "thai-grammar": [
+    {
+      title: "Thai Spelling & Grammar",
+      titleTh: "หลักการสะกดคำและไวยากรณ์ไทย",
+      order: 1,
+      content: `# ไวยากรณ์และการสะกดคำไทย
+
+## คำที่มักสะกดผิด (ออกสอบบ่อย)
+| ผิด | ถูก |
+|-----|-----|
+| อนุญาติ | **อนุญาต** |
+| กระเพรา | **กะเพรา** |
+| ลายเซ็นต์ | **ลายเซ็น** |
+| สังเกตุ | **สังเกต** |
+| ปรากฎ | **ปรากฏ** |
+
+## ลักษณนามที่ควรจำ
+- พระสงฆ์ → **รูป**
+- ช้าง ม้า วัว ควาย → **ตัว**
+- บ้าน → **หลัง**
+- เข็ม → **เล่ม**
+
+## คำสมาส–คำสนธิ
+- **คำสมาส**: นำคำบาลี/สันสกฤตมาต่อกัน เช่น ราช + การ = ราชการ
+- **คำสนธิ**: เชื่อมเสียงให้กลมกลืน เช่น วิทยา + อาลัย = วิทยาลัย
+
+## ราชาศัพท์เบื้องต้น
+- กิน → **เสวย**, นอน → **บรรทม**, ป่วย → **ประชวร**
+
+> เคล็ดลับ: ท่องคำที่ออกสอบบ่อยเป็นชุด แล้วทบทวนซ้ำ`,
+    },
+  ],
+  "thai-reading": [
+    {
+      title: "Reading Comprehension (Thai)",
+      titleTh: "เทคนิคการอ่านจับใจความภาษาไทย",
+      order: 1,
+      content: `# การอ่านจับใจความ
+
+## ขั้นตอนการจับใจความสำคัญ
+1. อ่านทั้งย่อหน้าให้จบก่อน อย่าเพิ่งตอบ
+2. หา **ประโยคใจความหลัก** (มักอยู่ต้นหรือท้ายย่อหน้า)
+3. ประโยคที่เหลือคือ "ส่วนขยาย/ตัวอย่าง"
+
+## คำเชื่อมที่บอกความสัมพันธ์
+- **เพราะ / จึง / ดังนั้น** → เหตุและผล
+- **แม้...ก็ / แต่ / อย่างไรก็ตาม** → ความขัดแย้ง
+- **และ / อีกทั้ง** → เพิ่มเติม
+
+## ชนิดของคำที่ออกสอบ
+- **คำซ้ำ**: ดำ ๆ, เร็ว ๆ
+- **คำซ้อน**: ขยันขันแข็ง, บ้านเรือน
+- **คำประสม**: แม่น้ำ, รถไฟ
+
+> อย่าตอบจาก "ความรู้สึก" ให้ยึดข้อความที่อยู่ในเรื่องเป็นหลัก`,
+    },
+  ],
+  "thai-proverbs": [
+    {
+      title: "Thai Proverbs & Idioms",
+      titleTh: "สรุปสำนวน สุภาษิต คำพังเพย",
+      order: 1,
+      content: `# สำนวน สุภาษิต คำพังเพย
+
+## ที่ออกสอบบ่อย
+- **น้ำขึ้นให้รีบตัก** — มีโอกาสควรรีบทำ
+- **ขี่ช้างจับตั๊กแตน** — ลงทุนมากแต่ได้ผลน้อย
+- **กว่าถั่วจะสุกงาก็ไหม้** — ทำอะไรช้าจนเสียประโยชน์ทั้งสองทาง
+- **รักวัวให้ผูก รักลูกให้ตี** — อบรมลูกต้องเข้มงวดบ้าง
+- **ปิดทองหลังพระ** — ทำดีโดยไม่หวังคำชม
+- **ตำน้ำพริกละลายแม่น้ำ** — ใช้จ่ายเปล่าประโยชน์
+
+## แยกประเภทให้ออก
+- **สุภาษิต**: สอนใจ มีคติ เช่น "ทำดีได้ดี"
+- **คำพังเพย**: เปรียบเปรย ยังไม่ถึงกับสอน เช่น "วัวหายล้อมคอก"
+- **สำนวน**: ถ้อยคำที่มีความหมายไม่ตรงตัว เช่น "ปิดทองหลังพระ"
+
+> ท่องความหมายคู่กับสถานการณ์ จะจำได้แม่นกว่าท่องลอย ๆ`,
+    },
+  ],
+  "english-grammar": [
+    {
+      title: "English Grammar Essentials",
+      titleTh: "ไวยากรณ์อังกฤษที่ออกสอบ ก.พ.",
+      order: 1,
+      content: `# English Grammar Essentials
+
+## Subject–Verb Agreement
+- He/She/It + **verb-s**: She **goes** to work.
+- Neither...nor / Either...or → กริยาตามประธานตัวที่ใกล้ที่สุด
+
+## Tenses ที่ออกบ่อย
+- **Present Simple**: ความจริง/นิสัย — I work every day.
+- **Present Perfect**: เริ่มอดีตต่อเนื่องถึงปัจจุบัน — She **has worked** here for 5 years.
+- ใช้ **since** + จุดเวลา (since 2010), **for** + ช่วงเวลา (for 5 years)
+
+## Articles
+- **a/an** ของนับได้เอกพจน์ทั่วไป (an + เสียงสระ: an elephant)
+- **the** ของเฉพาะเจาะจง
+
+## Comparatives
+- คำสั้น + **-er / -est** (big → bigger), คำลงท้าย y → i (heavy → heavier)
+- คำยาว + **more / most** (more beautiful)
+
+## Conditionals
+- Second conditional: If I **were** rich, I **would** travel.
+
+> จำโครงสร้างเป็น "สูตร" แล้วแทนคำ จะเร็วและแม่นขึ้น`,
+    },
+  ],
+  "english-reading": [
+    {
+      title: "English Vocabulary & Reading",
+      titleTh: "คำศัพท์และการอ่านภาษาอังกฤษ",
+      order: 1,
+      content: `# Vocabulary & Reading
+
+## เดาความหมายจากบริบท (Context Clues)
+- ดูคำรอบ ๆ และคำเชื่อม เช่น *but, however* (ความหมายตรงข้าม), *such as* (ตัวอย่าง)
+
+## Synonyms / Antonyms ที่ออกบ่อย
+| Word | Synonym | Antonym |
+|------|---------|---------|
+| diligent | hardworking | lazy |
+| abundant | plentiful | scarce |
+| benevolent | kind | cruel |
+| tired | exhausted | energetic |
+
+## ตัวย่อที่ควรรู้
+- **ASAP** = As Soon As Possible
+- **FAQ** = Frequently Asked Questions
+- **GDP** = Gross Domestic Product
+
+## บทสนทนา (Conversation)
+- "How are you?" → "I'm fine, thank you."
+- "Could you...?" เป็นการขอร้องอย่างสุภาพ
+
+> สะสมคำศัพท์วันละ 5–10 คำ พร้อมประโยคตัวอย่าง จำได้นานกว่า`,
+    },
+  ],
+  "civil-service-act": [
+    {
+      title: "Civil Service Act 2551",
+      titleTh: "สรุป พรบ. ระเบียบข้าราชการพลเรือน 2551",
+      order: 1,
+      content: `# พรบ. ระเบียบข้าราชการพลเรือน พ.ศ. 2551
+
+## สาระสำคัญ
+- **ผู้รักษาการ**: นายกรัฐมนตรี
+- **ก.พ.** = คณะกรรมการข้าราชการพลเรือน
+- **องค์กรกลางบริหารงานบุคคล**: สำนักงาน ก.พ.
+
+## ประเภทข้าราชการพลเรือนสามัญ (4 ประเภท)
+1. ประเภท **บริหาร**
+2. ประเภท **อำนวยการ**
+3. ประเภท **วิชาการ** (5 ระดับ)
+4. ประเภท **ทั่วไป**
+
+## โทษทางวินัย (5 สถาน เรียงจากเบาไปหนัก)
+1. ภาคทัณฑ์
+2. ตัดเงินเดือน
+3. ลดเงินเดือน
+4. **ปลดออก** (ยังมีสิทธิรับบำเหน็จบำนาญ)
+5. **ไล่ออก** (ไม่มีสิทธิรับบำเหน็จบำนาญ — โทษหนักสุด)
+
+## คุณสมบัติผู้สมัคร
+- อายุไม่ต่ำกว่า **18 ปี**
+- มีสัญชาติไทย
+
+> ข้อสอบกฎหมายเน้นตัวเลขและคำสำคัญ ให้จดเป็น bullet สั้น ๆ`,
+    },
+  ],
+  "government-ethics": [
+    {
+      title: "Good Governance & Ethics",
+      titleTh: "ธรรมาภิบาลและจริยธรรมข้าราชการ",
+      order: 1,
+      content: `# ธรรมาภิบาลและจริยธรรม
+
+## หลักธรรมาภิบาล (Good Governance) 6 หลัก
+1. หลัก **นิติธรรม**
+2. หลัก **คุณธรรม**
+3. หลัก **ความโปร่งใส** (เปิดเผยข้อมูล ตรวจสอบได้)
+4. หลัก **การมีส่วนร่วม**
+5. หลัก **ความรับผิดชอบ**
+6. หลัก **ความคุ้มค่า**
+
+## ผลประโยชน์ทับซ้อน (Conflict of Interest)
+การใช้ตำแหน่งหน้าที่เอื้อประโยชน์ส่วนตัวหรือพวกพ้อง ถือเป็นการขัดกันระหว่างประโยชน์ส่วนตนกับส่วนรวม
+
+## ค่านิยมหลักของข้าราชการ
+- ยึดมั่นในความถูกต้องชอบธรรมและจริยธรรม
+- ซื่อสัตย์ รับผิดชอบ โปร่งใส
+- มุ่งผลสัมฤทธิ์ของงาน บริการประชาชน
+- ยึดประโยชน์ส่วนรวมเป็นหลัก
+
+> ออกสอบแนววิเคราะห์สถานการณ์ ให้ยึด "ประโยชน์ส่วนรวม" เป็นคำตอบหลัก`,
+    },
+  ],
+  "thai-history": [
+    {
+      title: "Thai History & Civics",
+      titleTh: "ประวัติศาสตร์และความรู้พลเมืองไทย",
+      order: 1,
+      content: `# ประวัติศาสตร์และสังคมไทย
+
+## หมุดหมายสำคัญ
+- **สุโขทัย**: ราชธานีแรก เมืองหลวงคือสุโขทัย
+- **เสียกรุงศรีอยุธยาครั้งที่ 2**: พ.ศ. 2310
+- **ตั้งกรุงรัตนโกสินทร์**: พ.ศ. 2325 (ร.1)
+- **เปลี่ยนแปลงการปกครอง**: 24 มิ.ย. พ.ศ. 2475 โดยคณะราษฎร
+
+## การปกครองปัจจุบัน
+ระบอบ **ประชาธิปไตยอันมีพระมหากษัตริย์ทรงเป็นประมุข**
+- อำนาจอธิปไตย 3 ฝ่าย: **นิติบัญญัติ บริหาร ตุลาการ**
+
+## วันสำคัญ
+- วันรัฐธรรมนูญ: 10 ธันวาคม
+- วันพ่อแห่งชาติ: 5 ธันวาคม
+
+> เน้นจำปี พ.ศ. และลำดับเหตุการณ์เป็นไทม์ไลน์`,
+    },
+  ],
+  "current-affairs": [
+    {
+      title: "Current Affairs & Organizations",
+      titleTh: "เหตุการณ์ปัจจุบันและองค์กรระหว่างประเทศ",
+      order: 1,
+      content: `# เหตุการณ์ปัจจุบันและองค์กรโลก
+
+## องค์กรระหว่างประเทศ
+| ย่อ | ชื่อเต็ม | ดูแลด้าน |
+|-----|---------|----------|
+| UN | United Nations | สันติภาพ/ความร่วมมือ (สนง.ใหญ่: นิวยอร์ก) |
+| WHO | World Health Organization | สุขภาพ |
+| WTO | World Trade Organization | การค้า |
+| ASEAN | สมาคมประชาชาติเอเชียตะวันออกเฉียงใต้ | 10 ประเทศสมาชิก |
+
+## ศัพท์เศรษฐกิจที่ออกบ่อย
+- **GDP** = Gross Domestic Product (ผลิตภัณฑ์มวลรวมในประเทศ)
+- **SDGs** = เป้าหมายการพัฒนาที่ยั่งยืน 17 ข้อ ของ UN
+- **EU** ใช้สกุลเงิน **ยูโร (Euro)**
+
+> ติดตามข่าวสารปัจจุบันสม่ำเสมอ โดยเฉพาะองค์กรและตัวย่อ`,
+    },
+  ],
+};
+
 const achievements = [
-  { name: "First Step", nameTh: "เธเนเธฒเธงเนเธฃเธ", description: "เธ—เธณเธเนเธญเธชเธญเธเธเธฃเธฑเนเธเนเธฃเธ", icon: "๐ฑ", condition: "first_question", xpReward: 50 },
-  { name: "Century", nameTh: "เธฃเนเธญเธขเธเนเธญ", description: "เธ•เธญเธเธเธณเธ–เธฒเธกเธเธฃเธ 100 เธเนเธญ", icon: "๐’ฏ", condition: "questions_100", xpReward: 100 },
-  { name: "Streak 7", nameTh: "เน€เธฃเธตเธขเธเธ•เนเธญเน€เธเธทเนเธญเธ 7 เธงเธฑเธ", description: "เน€เธฃเธตเธขเธเธ•เนเธญเน€เธเธทเนเธญเธ 7 เธงเธฑเธ", icon: "๐”ฅ", condition: "streak_7", xpReward: 150 },
-  { name: "Perfect Score", nameTh: "เน€เธ•เนเธกเธฃเนเธญเธข", description: "เนเธ”เนเธเธฐเนเธเธ 100% เนเธเธเธฒเธฃเธชเธญเธ", icon: "โญ", condition: "perfect_exam", xpReward: 200 },
-  { name: "All Subjects", nameTh: "เธเธฃเธเธ—เธธเธเธงเธดเธเธฒ", description: "เธ—เธณเธเนเธญเธชเธญเธเธเธฃเธเธ—เธธเธเธงเธดเธเธฒ", icon: "๐ฏ", condition: "all_subjects", xpReward: 250 },
-  { name: "Speed Demon", nameTh: "เนเธงเน€เธซเธกเธทเธญเธเธชเธฒเธขเธเนเธฒ", description: "เธ•เธญเธเธ–เธนเธ 10 เธเนเธญเธ•เธดเธ”เธ•เนเธญเธเธฑเธ", icon: "โก", condition: "correct_10_streak", xpReward: 100 },
-  { name: "Scholar", nameTh: "เธเธฑเธเธงเธดเธเธฒเธเธฒเธฃ", description: "เธ–เธถเธเธฃเธฐเธ”เธฑเธ 6", icon: "๐“", condition: "level_6", xpReward: 300 },
-  { name: "Expert", nameTh: "เธเธนเนเน€เธเธตเนเธขเธงเธเธฒเธ", description: "เธ–เธถเธเธฃเธฐเธ”เธฑเธ 10", icon: "๐‘‘", condition: "level_10", xpReward: 500 },
+  { name: "First Step", nameTh: "ก้าวแรก", description: "ทำข้อสอบครั้งแรก", icon: "🌱", condition: "first_question", xpReward: 50 },
+  { name: "Century", nameTh: "ร้อยข้อ", description: "ตอบคำถามครบ 100 ข้อ", icon: "💯", condition: "questions_100", xpReward: 100 },
+  { name: "Streak 7", nameTh: "ต่อเนื่อง 7 วัน", description: "เรียนต่อเนื่อง 7 วัน", icon: "🔥", condition: "streak_7", xpReward: 150 },
+  { name: "Perfect Score", nameTh: "เต็มร้อย", description: "ได้คะแนน 100% ในการสอบ", icon: "⭐", condition: "perfect_exam", xpReward: 200 },
+  { name: "All Subjects", nameTh: "ครบทุกวิชา", description: "ทำข้อสอบครบทุกวิชา", icon: "🎯", condition: "all_subjects", xpReward: 250 },
+  { name: "Speed Demon", nameTh: "ไวเหมือนสายฟ้า", description: "ตอบถูก 10 ข้อติดต่อกัน", icon: "⚡", condition: "correct_10_streak", xpReward: 100 },
+  { name: "Scholar", nameTh: "นักวิชาการ", description: "ถึงระดับ 6", icon: "🎓", condition: "level_6", xpReward: 300 },
+  { name: "Expert", nameTh: "ผู้เชี่ยวชาญ", description: "ถึงระดับ 10", icon: "👑", condition: "level_10", xpReward: 500 },
 ];
 
 async function main() {
-  console.log("๐ฑ Seeding database...");
+  console.log("Seeding database...");
 
-  // Seed subjects and topics
+  // ล้างข้อมูลที่ insert ซ้ำได้ก่อน เพื่อให้ seed รันซ้ำได้อย่างปลอดภัย (idempotent)
+  await prisma.examAnswer.deleteMany();
+  await prisma.question.deleteMany();
+  await prisma.lesson.deleteMany();
+
   for (const subject of subjects) {
     const { topics, ...subjectData } = subject;
     const createdSubject = await prisma.subject.upsert({
@@ -862,21 +1926,24 @@ async function main() {
 
       for (const question of questions) {
         const { options, ...questionData } = question;
-        const createdQuestion = await prisma.question.create({
+        await prisma.question.create({
           data: {
             ...questionData,
             topicId: createdTopic.id,
-            options: {
-              create: options,
-            },
+            options: { create: options },
           },
         });
-        console.log(`  โ“ Question: ${createdQuestion.content.substring(0, 50)}...`);
+      }
+      console.log(`  Topic ${topicData.slug}: ${questions.length} questions`);
+
+      for (const lesson of lessons[topicData.slug] ?? []) {
+        await prisma.lesson.create({
+          data: { ...lesson, topicId: createdTopic.id },
+        });
       }
     }
   }
 
-  // Seed achievements
   for (const achievement of achievements) {
     await prisma.achievement.upsert({
       where: { id: achievement.name.toLowerCase().replace(/\s/g, "-") },
@@ -885,7 +1952,6 @@ async function main() {
     });
   }
 
-  // Create demo admin user
   const hashedPassword = await bcrypt.hash("admin1234", 10);
   const admin = await prisma.user.upsert({
     where: { email: "admin@kpexam.com" },
@@ -895,14 +1961,12 @@ async function main() {
       name: "Admin",
       password: hashedPassword,
       role: "ADMIN",
-      profile: {
-        create: { xp: 9999, level: 10, streak: 0 },
-      },
+      profile: { create: { xp: 9999, level: 10, streak: 0 } },
     },
   });
-  console.log(`โ“ Admin user: ${admin.email}`);
+  console.log(`Admin user: ${admin.email}`);
 
-  console.log("โ… Seeding complete!");
+  console.log("Seeding complete!");
 }
 
 main()

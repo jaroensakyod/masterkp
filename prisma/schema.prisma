@@ -93,7 +93,19 @@ model Topic {
   description String?
   order       Int            @default(0)
   questions   Question[]
+  lessons     Lesson[]
   progress    UserProgress[]
+}
+
+model Lesson {
+  id        String   @id @default(cuid())
+  topicId   String
+  topic     Topic    @relation(fields: [topicId], references: [id], onDelete: Cascade)
+  title     String
+  titleTh   String
+  content   String
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
 }
 
 model Question {

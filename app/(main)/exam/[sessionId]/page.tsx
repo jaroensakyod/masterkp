@@ -34,7 +34,10 @@ export default function ExamPage({ params }: { params: Promise<{ sessionId: stri
 
   useEffect(() => {
     const fetchQuestions = async () => {
-      const paramStr = mode === "EXAM" ? "?mode=exam" : "?mode=exam";
+      // ถ้ามี ids ใน URL (สอบจำลอง/เฉพาะวิชา) ให้ดึงเฉพาะข้อเหล่านั้น
+      const ids = searchParams.getAll("id");
+      const paramStr =
+        ids.length > 0 ? `?${ids.map((id) => `id=${id}`).join("&")}` : "?mode=exam";
       const r = await fetch(`/api/questions${paramStr}`);
       const q = await r.json();
       setQuestions(q);

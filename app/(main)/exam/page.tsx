@@ -27,32 +27,40 @@ export default function ExamSetupPage() {
     );
   }
 
-  async function startExam() {
-    setLoading(true);
-    const queryParams =
-      mode === "EXAM"
-        ? "?mode=exam&limit=100"
-        : `?mode=exam&${selectedTopics.map((id) => `topicId=${id}`).join("&")}`;
-
-    const questionsRes = await fetch(`/api/questions${queryParams}`);
-    const questions = await questionsRes.json();
-
-    if (!questions.length) {
+  // เริ่มสอบจาก questionIds ที่เตรียมไว้
+  async function startSession(questionIds: string[], sessionMode: string) {
+    if (!questionIds.length) {
       alert("ไม่พบข้อสอบ");
       setLoading(false);
       return;
     }
-
     const startRes = await fetch("/api/exam/start", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        mode,
-        questionIds: questions.map((q: { id: string }) => q.id),
-      }),
+      body: JSON.stringify({ mode: sessionMode, questionIds }),
     });
     const { sessionId } = await startRes.json();
-    router.push(`/exam/${sessionId}?mode=${mode}`);
+    const idParams = questionIds.map((id) => `id=${id}`).join("&");
+    router.push(`/exam/${sessionId}?mode=${sessionMode}&${idParams}`);
+  }
+
+  async function startExam() {
+    setLoading(true);
+    if (mode === "EXAM") {
+      // สอบจำลองตามสัดส่วนสนามจริง ก.พ. ภาค ก
+      const res = await fetch("/api/exam/mock");
+      const { questionIds } = await res.json();
+      await startSession(questionIds, "EXAM");
+      return;
+    }
+    // เฉพาะวิชา: ดึงข้อของหัวข้อที่เลือก
+    const queryParams = selectedTopics.map((id) => `topicId=${id}`).join("&");
+    const questionsRes = await fetch(`/api/questions?limit=100&${queryParams}`);
+    const questions = await questionsRes.json();
+    await startSession(
+      questions.map((q: { id: string }) => q.id),
+      "TOPIC"
+    );
   }
 
   return (
@@ -71,8 +79,8 @@ export default function ExamSetupPage() {
           }`}
         >
           <div className="text-2xl mb-2">📋</div>
-          <div className="font-bold text-slate-900">สอบเต็ม</div>
-          <div className="text-sm text-slate-500 mt-1">100 ข้อ ทุกวิชา · 2.5 ชั่วโมง</div>
+          <div className="font-bold text-slate-900">สอบจำลอง (เสมือนจริง)</div>
+          <div className="text-sm text-slate-500 mt-1">สุ่มทุกวิชาตามสัดส่วน ก.พ. · จับเวลา</div>
         </button>
         <button
           onClick={() => setMode("TOPIC")}
@@ -121,8 +129,8 @@ export default function ExamSetupPage() {
       <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 mb-6">
         <h3 className="font-bold text-amber-800 mb-2">📌 ข้อมูลการสอบ</h3>
         <ul className="text-sm text-amber-700 space-y-1">
-          <li>• {mode === "EXAM" ? "100 ข้อ ครอบคลุมทุกวิชา" : `เลือก ${selectedTopics.length} หัวข้อ`}</li>
-          <li>• เวลา {mode === "EXAM" ? "2 ชั่วโมง 30 นาที" : "ไม่จำกัดเวลา"}</li>
+          <li>• {mode === "EXAM" ? "สุ่มข้อสอบครอบคลุมทุกวิชาตามสัดส่วนสนามจริง" : `เลือก ${selectedTopics.length} หัวข้อ`}</li>
+          <li>• เวลา {mode === "EXAM" ? "2 ชั่วโมง 30 นาที (จับเวลา)" : "ไม่จำกัดเวลา"}</li>
           <li>• ไม่มีเฉลยระหว่างทำข้อสอบ — จะแสดงหลังส่งงาน</li>
           <li>• สามารถทบทวนคำตอบก่อนส่งได้</li>
         </ul>
