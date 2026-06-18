@@ -14,27 +14,73 @@ interface Lesson {
   };
 }
 
-// ตัวแปลง Markdown แบบเบา (heading / bold / list / table / blockquote)
+// แปลง **ตัวหนา** ในข้อความเป็น ReactNode
+function inlineBold(text: string): React.ReactNode[] {
+  return text.split(/(\*\*[^*]+\*\*)/g).map((part, idx) =>
+    part.startsWith("**") && part.endsWith("**") ? (
+      <strong key={idx}>{part.slice(2, -2)}</strong>
+    ) : (
+      <span key={idx}>{part}</span>
+    )
+  );
+}
+
+// แบบฝึกหัด 1 ข้อ — กดปุ่มเพื่อเปิด/ปิดเฉลย
+function ExerciseItem({ question, answer, index }: { question: string; answer: string; index: number }) {
+  const [show, setShow] = useState(false);
+  return (
+    <div className="border border-slate-200 rounded-xl p-4 my-3 bg-slate-50">
+      <p className="text-slate-800 text-sm font-medium">
+        <span className="text-indigo-600 font-bold mr-1">ข้อ {index}.</span>
+        {inlineBold(question)}
+      </p>
+      <button
+        onClick={() => setShow((s) => !s)}
+        className="mt-3 text-xs font-semibold text-indigo-600 hover:text-indigo-800 transition-colors"
+      >
+        {show ? "▲ ซ่อนเฉลย" : "▼ ดูเฉลย"}
+      </button>
+      {show && (
+        <div className="mt-2 p-3 bg-white border border-indigo-100 rounded-lg text-sm text-slate-700 leading-relaxed">
+          {inlineBold(answer)}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ตัวแปลง Markdown แบบเบา (heading / bold / list / table / blockquote / แบบฝึกหัด ??/!!)
 function renderMarkdown(md: string): React.ReactNode[] {
   const lines = md.split("\n");
   const out: React.ReactNode[] = [];
   let i = 0;
   let key = 0;
 
-  const inline = (text: string): React.ReactNode[] =>
-    text.split(/(\*\*[^*]+\*\*)/g).map((part, idx) =>
-      part.startsWith("**") && part.endsWith("**") ? (
-        <strong key={idx}>{part.slice(2, -2)}</strong>
-      ) : (
-        <span key={idx}>{part}</span>
-      )
-    );
+  const inline = inlineBold;
+  let exerciseNo = 0;
 
   while (i < lines.length) {
     const line = lines[i];
 
     if (line.trim() === "") {
       i++;
+      continue;
+    }
+
+    // แบบฝึกหัด: "?? โจทย์" ตามด้วย "!! เฉลย"
+    if (line.startsWith("?? ")) {
+      const question = line.slice(3);
+      let answer = "";
+      if (lines[i + 1]?.startsWith("!! ")) {
+        answer = lines[i + 1].slice(3);
+        i += 2;
+      } else {
+        i++;
+      }
+      exerciseNo++;
+      out.push(
+        <ExerciseItem key={key++} index={exerciseNo} question={question} answer={answer} />
+      );
       continue;
     }
 
